@@ -123,6 +123,10 @@ jobs:
           fi
         shell: bash
 
+      - name: Verify packaged Windows native modules
+        if: runner.os == 'Windows'
+        run: npm run verify:win-package
+
       - name: Verify built files
         run: ls -R
         shell: bash

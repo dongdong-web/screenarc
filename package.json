@@ -20,6 +20,7 @@
     "dist:zip": "tsc && npm run build && electron-builder build -l zip --publish never",
     "dist:linux": "tsc && npm run build && electron-builder --linux --publish never",
     "dist:win": "tsc && npm run build && electron-builder --win --publish never",
+    "verify:win-package": "node scripts/verify-windows-package.mjs",
     "dist:mac": "tsc && npm run build && electron-builder --mac --universal --publish never",
     "dist:mac-arm64": "tsc && npm run build && electron-builder --mac --arm64 --publish never",
     "publish-linux-app": "tsc && npm run build && electron-builder -l --publish always",

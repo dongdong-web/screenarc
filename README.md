@@ -191,6 +191,19 @@ Grab the latest version for your OS from the [**Releases Page**](https://github.
     npm run dev
     ```
 
+### Verify a Windows package
+
+Mouse tracking and automatic click zooms depend on native Windows modules. Before publishing a Windows installer,
+build it and verify that electron-builder included the compiled bindings:
+
+```bash
+npm run dist:win
+npm run verify:win-package
+```
+
+The verification command fails when either required module or its compiled `.node` binding is missing from the
+unpacked application. Do not distribute an installer that fails this check.
+
 ## 🤝 Contributing
 
 A huge thank you to everyone who has contributed to making ScreenArc better!
