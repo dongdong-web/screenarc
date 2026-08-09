@@ -1,0 +1,53 @@
+name: Windows Package Diagnostic
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows-package:
+    name: Build and verify Windows package
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Download and setup FFmpeg
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path binaries/windows | Out-Null
+          Invoke-WebRequest `
+            -Uri https://github.com/tamnguyenvan/screenarc-assets/releases/download/v0.0.1/ffmpeg.exe `
+            -OutFile binaries/windows/ffmpeg.exe
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Windows installer
+        run: npm run dist:win
+
+      - name: Verify packaged native modules
+        run: npm run verify:win-package
+
+      - name: Upload diagnostic installer
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenarc-windows-${{ github.run_number }}
+          path: |
+            dist/*.exe
+            dist/*.blockmap
+            dist/*.yml
+            dist/*.yaml
+          if-no-files-found: error
+          retention-days: 7

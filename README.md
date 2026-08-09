@@ -206,6 +206,12 @@ npm run verify:win-package
 The verification command fails when either required module or its compiled `.node` binding is missing from the
 unpacked application. Do not distribute an installer that fails this check.
 
+### Run a Windows diagnostic build in GitHub Actions
+
+This repository includes a manual-only **Windows Package Diagnostic** workflow. In the **Actions** tab, select that
+workflow and choose **Run workflow** for the branch you want to validate. It builds a Windows installer, verifies its
+native modules, and uploads the installer as a seven-day artifact. It does not create a Git tag or a GitHub Release.
+
 ## 🤝 Contributing
 
 A huge thank you to everyone who has contributed to making ScreenArc better!

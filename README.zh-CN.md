@@ -107,6 +107,10 @@ npm run verify:win-package
 
 只有验证通过的构建才应进入实际录屏测试、签名和发布流程。
 
+### 在 GitHub Actions 中运行 Windows 诊断构建
+
+本 Fork 包含一个仅能手动触发的 **Windows Package Diagnostic** 工作流。把本分支推送到 GitHub 后，在 **Actions** 选项卡选择它，再点击 **Run workflow**。它会构建 Windows 安装包、验证原生模块，并上传保留 7 天的测试安装包 Artifact；不会创建 Git 标签或 GitHub Release。
+
 ## 参与贡献
 
 - 遇到问题或有功能想法，请先在 [Issues](https://github.com/dongdong-web/screenarc/issues) 中描述复现步骤和预期结果。
