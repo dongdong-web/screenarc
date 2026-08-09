@@ -1,5 +1,7 @@
 # ScreenArc 🎬
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 <div align="center">
   <img src="https://raw.githubusercontent.com/tamnguyenvan/screenarc/main/docs/assets/small-banner.png" alt="ScreenArc Banner">
 </div>
