@@ -43,12 +43,12 @@ export function verifyWindowsPackage(resourcesPath) {
     throw new Error(`Packaged application archive is missing: ${asarPath}`)
   }
 
-  const unpackedModulesPath = path.join(resolvedResourcesPath, 'app.asar.unpacked', 'node_modules')
+  const nativeModulesPath = path.join(resolvedResourcesPath, 'native-modules', 'node_modules')
   const results = REQUIRED_NATIVE_PACKAGES.map((packageName) => {
-    const packagePath = path.join(unpackedModulesPath, packageName)
+    const packagePath = path.join(nativeModulesPath, packageName)
     if (!existsSync(packagePath)) {
       throw new Error(
-        `Required Windows native package is missing from app.asar.unpacked: ${packageName}. ` +
+        `Required Windows native package is missing from resources/native-modules: ${packageName}. ` +
           'Do not publish this installer because mouse tracking will be disabled.',
       )
     }

@@ -102,7 +102,7 @@ npm run verify:win-package
 
 第一条命令会按 Electron 的 ABI 重新编译 Windows 原生模块。第三条命令会在下列情形失败：
 
-- `global-mouse-events` 或 `node-win-cursor` 未被打进包中；
+- `global-mouse-events` 或 `node-win-cursor` 未被打进 `resources/native-modules`；
 - 相关模块没有对应的已编译 `.node` 二进制文件；
 - 未找到符合预期的 Windows 解包资源目录。
 

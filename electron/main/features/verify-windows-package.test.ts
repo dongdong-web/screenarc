@@ -22,7 +22,7 @@ function createPackagedResources({
 } = {}) {
   const outputDirectory = createTemporaryDirectory()
   const resourcesPath = path.join(outputDirectory, 'win-unpacked', 'resources')
-  const modulesPath = path.join(resourcesPath, 'app.asar.unpacked', 'node_modules')
+  const modulesPath = path.join(resourcesPath, 'native-modules', 'node_modules')
   mkdirSync(modulesPath, { recursive: true })
   writeFileSync(path.join(resourcesPath, 'app.asar'), 'fixture')
 

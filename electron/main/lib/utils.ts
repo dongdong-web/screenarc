@@ -10,7 +10,7 @@ import { ResolutionKey, RESOLUTIONS } from './constants'
 const require = createRequire(import.meta.url)
 
 export function loadNativeModule<T>(name: string): T {
-  const modulePath = app.isPackaged ? path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', name) : name
+  const modulePath = app.isPackaged ? path.join(process.resourcesPath, 'native-modules', 'node_modules', name) : name
 
   return require(modulePath) as T
 }

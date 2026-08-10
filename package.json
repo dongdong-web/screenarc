@@ -119,16 +119,28 @@
     "win": {
       "extraResources": [
         {
-          "from": "node_modules",
-          "to": "app.asar.unpacked/node_modules",
-          "filter": [
-            "global-mouse-events/**",
-            "node-win-cursor/**",
-            "bindings/**",
-            "file-uri-to-path/**",
-            "node-addon-api/**",
-            "node-gyp-build/**"
-          ]
+          "from": "node_modules/global-mouse-events",
+          "to": "native-modules/node_modules/global-mouse-events"
+        },
+        {
+          "from": "node_modules/node-win-cursor",
+          "to": "native-modules/node_modules/node-win-cursor"
+        },
+        {
+          "from": "node_modules/bindings",
+          "to": "native-modules/node_modules/bindings"
+        },
+        {
+          "from": "node_modules/file-uri-to-path",
+          "to": "native-modules/node_modules/file-uri-to-path"
+        },
+        {
+          "from": "node_modules/node-addon-api",
+          "to": "native-modules/node_modules/node-addon-api"
+        },
+        {
+          "from": "node_modules/node-gyp-build",
+          "to": "native-modules/node_modules/node-gyp-build"
         }
       ],
       "target": [
