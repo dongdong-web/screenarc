@@ -199,13 +199,15 @@ Mouse tracking and automatic click zooms depend on native Windows modules. Befor
 build it and verify that electron-builder included the compiled bindings:
 
 ```bash
+npm run prepare:win-native
 npm run rebuild:win-native
 npm run dist:win
 npm run verify:win-package
 ```
 
-The rebuild command compiles the Windows-only native modules against Electron. The verification command fails when
-either required module or its compiled `.node` binding is missing from `resources/native-modules`. Do not distribute an
+The first command installs the pinned Windows-only native module sources without using their incompatible Node ABI
+install hooks. The rebuild command then compiles them against Electron. The verification command fails when either
+required module or its compiled `.node` binding is missing from `resources/native-modules`. Do not distribute an
 installer that fails this check.
 
 ### Run a Windows diagnostic build in GitHub Actions

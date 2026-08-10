@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Windows native module sources
+        run: npm run prepare:win-native
+
       - name: Rebuild Windows native modules for Electron
         run: npm run rebuild:win-native
 

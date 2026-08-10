@@ -20,6 +20,7 @@
     "dist:zip": "tsc && npm run build && electron-builder build -l zip --publish never",
     "dist:linux": "tsc && npm run build && electron-builder --linux --publish never",
     "dist:win": "tsc && npm run build && electron-builder --win --publish never",
+    "prepare:win-native": "npm install --no-save --no-package-lock --ignore-scripts git+https://github.com/tamnguyenvan/global-mouse-events.git#960acc2ab9ee6a1c33b65227adf3cff30fb59c8e git+https://github.com/tamnguyenvan/node-win-cursor.git#c7c64c5b166a69d49d54dffb2bad35bf1c14af45",
     "rebuild:win-native": "electron-rebuild --force --only global-mouse-events,node-win-cursor",
     "verify:win-package": "node scripts/verify-windows-package.mjs",
     "dist:mac": "tsc && npm run build && electron-builder --mac --universal --publish never",

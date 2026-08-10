@@ -95,12 +95,14 @@ chmod +x ScreenArc-*-linux-x64.AppImage
 Windows 的鼠标轨迹依赖原生模块。准备发布安装包前必须先构建，再检查安装包内容：
 
 ```bash
+npm run prepare:win-native
 npm run rebuild:win-native
 npm run dist:win
 npm run verify:win-package
 ```
 
-第一条命令会按 Electron 的 ABI 重新编译 Windows 原生模块。第三条命令会在下列情形失败：
+第一条命令会下载锁定版本的 Windows 原生模块源码，并跳过与 Electron ABI 不兼容的安装钩子。第二条命令会按 Electron 的 ABI
+重新编译这些模块。第四条命令会在下列情形失败：
 
 - `global-mouse-events` 或 `node-win-cursor` 未被打进 `resources/native-modules`；
 - 相关模块没有对应的已编译 `.node` 二进制文件；
