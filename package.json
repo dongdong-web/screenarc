@@ -20,6 +20,7 @@
     "dist:zip": "tsc && npm run build && electron-builder build -l zip --publish never",
     "dist:linux": "tsc && npm run build && electron-builder --linux --publish never",
     "dist:win": "tsc && npm run build && electron-builder --win --publish never",
+    "rebuild:win-native": "electron-rebuild --force --only global-mouse-events,node-win-cursor",
     "verify:win-package": "node scripts/verify-windows-package.mjs",
     "dist:mac": "tsc && npm run build && electron-builder --mac --universal --publish never",
     "dist:mac-arm64": "tsc && npm run build && electron-builder --mac --arm64 --publish never",
@@ -59,6 +60,7 @@
     "zustand": "^4.3.0"
   },
   "devDependencies": {
+    "@electron/rebuild": "3.7.2",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
@@ -115,6 +117,20 @@
       "node_modules/x11/**/*"
     ],
     "win": {
+      "extraResources": [
+        {
+          "from": "node_modules",
+          "to": "app.asar.unpacked/node_modules",
+          "filter": [
+            "global-mouse-events/**",
+            "node-win-cursor/**",
+            "bindings/**",
+            "file-uri-to-path/**",
+            "node-addon-api/**",
+            "node-gyp-build/**"
+          ]
+        }
+      ],
       "target": [
         "nsis"
       ],

@@ -117,6 +117,7 @@ jobs:
           if [ "${{ runner.os }}" == "Linux" ]; then
             npm run dist:linux
           elif [ "${{ runner.os }}" == "Windows" ]; then
+            npm run rebuild:win-native
             npm run dist:win
           elif [ "${{ runner.os }}" == "macOS" ]; then
             npm run dist:mac

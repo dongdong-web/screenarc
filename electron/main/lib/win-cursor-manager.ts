@@ -2,9 +2,7 @@
 // electron/main/lib/win-cursor-manager.ts
 
 import log from 'electron-log/main'
-import { createRequire } from 'node:module'
-
-const require = createRequire(import.meta.url)
+import { loadNativeModule } from './utils'
 
 let nativeModule: any
 const handleToNameMap: Record<number, string> = {}
@@ -51,7 +49,7 @@ const CURSOR_NAME_TO_IDC_MAP: Record<string, string> = {
 
 export function initializeWinCursorManager() {
   try {
-    nativeModule = require('node-win-cursor')
+    nativeModule = loadNativeModule('node-win-cursor')
     isInitialized = true
 
     for (const [name, id] of Object.entries(CURSOR_IDS)) {

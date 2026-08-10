@@ -4,7 +4,16 @@ import log from 'electron-log/main'
 import { app } from 'electron'
 import path from 'node:path'
 import fs from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import { ResolutionKey, RESOLUTIONS } from './constants'
+
+const require = createRequire(import.meta.url)
+
+export function loadNativeModule<T>(name: string): T {
+  const modulePath = app.isPackaged ? path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', name) : name
+
+  return require(modulePath) as T
+}
 
 export function getBinaryPath(name: string): string {
   const platform = process.platform === 'win32' ? 'windows' : process.platform === 'darwin' ? 'darwin' : 'linux'

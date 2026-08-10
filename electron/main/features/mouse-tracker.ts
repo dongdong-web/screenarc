@@ -6,6 +6,7 @@ import { createRequire } from 'node:module'
 import { createHash } from 'node:crypto'
 import { MOUSE_RECORDING_FPS } from '../lib/constants'
 import { MOUSE_BUTTONS } from '../lib/system-constants'
+import { loadNativeModule } from '../lib/utils'
 import * as winCursorManager from '../lib/win-cursor-manager'
 import * as macosCursorManager from '../lib/macos-cursor-manager'
 import { MetaDataItem } from '../types'
@@ -41,7 +42,7 @@ export function initializeMouseTrackerDependencies() {
 
   if (process.platform === 'win32') {
     try {
-      mouseEvents = require('global-mouse-events')
+      mouseEvents = loadNativeModule('global-mouse-events')
       winCursorManager.initializeWinCursorManager()
       log.info('[MouseTracker] Successfully loaded global-mouse-events and initialized win-cursor-manager for Windows.')
     } catch (e) {
