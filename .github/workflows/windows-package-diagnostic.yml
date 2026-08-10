@@ -1,6 +1,9 @@
 name: Windows Package Diagnostic
 
 on:
+  push:
+    branches:
+      - fix/windows-native-package-verification
   workflow_dispatch:
 
 permissions:

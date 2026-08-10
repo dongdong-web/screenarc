@@ -208,9 +208,10 @@ unpacked application. Do not distribute an installer that fails this check.
 
 ### Run a Windows diagnostic build in GitHub Actions
 
-This repository includes a manual-only **Windows Package Diagnostic** workflow. In the **Actions** tab, select that
-workflow and choose **Run workflow** for the branch you want to validate. It builds a Windows installer, verifies its
-native modules, and uploads the installer as a seven-day artifact. It does not create a Git tag or a GitHub Release.
+On the `fix/windows-native-package-verification` validation branch, this workflow runs automatically after a push.
+After the workflow is merged into the default branch, it can also be started manually from the **Actions** tab. It
+builds a Windows installer, verifies its native modules, and uploads the installer as a seven-day artifact. It does
+not create a Git tag or a GitHub Release.
 
 ## 🤝 Contributing
 
