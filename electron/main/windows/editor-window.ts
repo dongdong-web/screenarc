@@ -66,6 +66,10 @@ export function createEditorWindow(
       // capture code, but the editor must not inherit that unsafe configuration.
       contextIsolation: true,
       nodeIntegration: false,
+      // Electron's Chromium sandbox process fails to start on some Windows
+      // installations (0xC0000135). Keep the renderer isolated from page code
+      // while opting out of that OS-level sandbox for this local-only editor.
+      sandbox: false,
       webSecurity: !VITE_DEV_SERVER_URL,
     },
   })
