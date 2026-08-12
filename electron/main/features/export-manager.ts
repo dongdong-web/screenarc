@@ -28,6 +28,12 @@ export async function startExport(event: IpcMainInvokeEvent, { projectState, exp
     webPreferences: {
       preload: PRELOAD_SCRIPT,
       offscreen: true,
+      // Match the editor's local-renderer configuration. On affected Windows
+      // systems the Chromium sandbox process exits before this worker can send
+      // its render:ready signal, leaving FFmpeg waiting for frames forever.
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: false,
       webSecurity: false,
     },
   })
@@ -72,6 +78,25 @@ export async function startExport(event: IpcMainInvokeEvent, { projectState, exp
 
   ffmpeg.stderr.on('data', (data) => log.info(`[FFmpeg stderr]: ${data.toString()}`))
 
+  let exportFinished = false
+  const finishWithError = (error: string) => {
+    if (exportFinished) return
+    exportFinished = true
+
+    log.error(`[ExportManager] ${error}`)
+    cleanupIpcListeners()
+    if (!ffmpegClosed && !ffmpeg.killed) {
+      ffmpeg.kill('SIGKILL')
+    }
+    if (appState.renderWorker && !appState.renderWorker.isDestroyed()) {
+      appState.renderWorker.close()
+    }
+    appState.renderWorker = null
+    if (editorWindow && !editorWindow.isDestroyed()) {
+      editorWindow.webContents.send('export:complete', { success: false, error })
+    }
+  }
+
   const cancellationHandler = () => {
     log.warn('[ExportManager] Received "export:cancel". Terminating export.')
     if (ffmpeg && !ffmpeg.killed) {
@@ -100,12 +125,39 @@ export async function startExport(event: IpcMainInvokeEvent, { projectState, exp
     }
   }
 
+  const renderReadyListener = () => {
+    clearTimeout(renderReadyTimeout)
+    log.info('[ExportManager] Worker ready. Sending project state.')
+    if (appState.renderWorker && !appState.renderWorker.isDestroyed()) {
+      appState.renderWorker.webContents.send('render:start', { projectState, exportSettings })
+    }
+  }
+
+  const cleanupIpcListeners = () => {
+    ipcMain.removeListener('export:frame-data', frameListener)
+    ipcMain.removeListener('export:render-finished', finishListener)
+    ipcMain.removeListener('export:cancel', cancellationHandler)
+    ipcMain.removeListener('render:ready', renderReadyListener)
+    clearTimeout(renderReadyTimeout)
+  }
+
   ipcMain.on('export:frame-data', frameListener)
   ipcMain.on('export:render-finished', finishListener)
   ipcMain.once('export:cancel', cancellationHandler) // Use once to avoid multiple calls
 
+  appState.renderWorker.webContents.on('render-process-gone', (_event, details) => {
+    finishWithError(`Export renderer stopped unexpectedly (${details.reason}, code ${details.exitCode}).`)
+  })
+  appState.renderWorker.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+    if (isMainFrame && errorCode !== -3) {
+      finishWithError(`Export renderer could not load (${errorCode}: ${errorDescription}) at ${validatedURL}.`)
+    }
+  })
+
   ffmpeg.on('close', (code) => {
     ffmpegClosed = true
+    if (exportFinished) return
+    exportFinished = true
     log.info(`[ExportManager] FFmpeg process exited with code ${code}.`)
     if (appState.renderWorker && !appState.renderWorker.isDestroyed()) {
       appState.renderWorker.close()
@@ -127,15 +179,12 @@ export async function startExport(event: IpcMainInvokeEvent, { projectState, exp
     }
 
     // Clean up all listeners
-    ipcMain.removeListener('export:frame-data', frameListener)
-    ipcMain.removeListener('export:render-finished', finishListener)
-    ipcMain.removeListener('export:cancel', cancellationHandler)
+    cleanupIpcListeners()
   })
 
-  ipcMain.once('render:ready', () => {
-    log.info('[ExportManager] Worker ready. Sending project state.')
-    if (appState.renderWorker && !appState.renderWorker.isDestroyed()) {
-      appState.renderWorker.webContents.send('render:start', { projectState, exportSettings })
-    }
-  })
+  const renderReadyTimeout = setTimeout(() => {
+    finishWithError('Export renderer did not start within 15 seconds.')
+  }, 15_000)
+
+  ipcMain.once('render:ready', renderReadyListener)
 }
