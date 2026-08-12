@@ -61,6 +61,11 @@ export function createEditorWindow(
     show: false,
     webPreferences: {
       preload: PRELOAD_SCRIPT,
+      // The preload exposes a narrow API through contextBridge, which requires
+      // context isolation. The recorder enables Node integration for legacy
+      // capture code, but the editor must not inherit that unsafe configuration.
+      contextIsolation: true,
+      nodeIntegration: false,
       webSecurity: !VITE_DEV_SERVER_URL,
     },
   })
