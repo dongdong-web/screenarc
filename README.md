@@ -104,6 +104,11 @@ Grab the latest version for your OS from the [**Releases Page**](https://github.
    - Double-click to start the installation
    - Follow the on-screen instructions
 
+#### GPU Compatibility
+
+ScreenArc runs its GPU work inside the main Electron process on Windows. This compatibility mode avoids startup
+failures on systems where Chromium's isolated GPU process cannot load a required driver or sandbox dependency.
+
 ### 🍏 macOS Instructions
 
 #### Security Notice

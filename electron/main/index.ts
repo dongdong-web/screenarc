@@ -1,6 +1,16 @@
 // Entry point of the Electron application.
 
-import { app, BrowserWindow, protocol, ProtocolRequest, ProtocolResponse, Menu, screen, dialog, desktopCapturer } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  protocol,
+  ProtocolRequest,
+  ProtocolResponse,
+  Menu,
+  screen,
+  dialog,
+  desktopCapturer,
+} from 'electron'
 import { initMain as initAudioLoopback } from 'electron-audio-loopback'
 import log from 'electron-log/main'
 import path from 'node:path'
@@ -15,6 +25,14 @@ import { appState } from './state'
 
 // --- Initialization ---
 setupLogging()
+
+// Some Windows systems fail to launch Chromium's isolated GPU process because a
+// driver or sandbox dependency cannot be loaded. Keep GPU work in Electron's
+// main process so ScreenArc can still open and record on those systems.
+if (process.platform === 'win32') {
+  app.commandLine.appendSwitch('in-process-gpu')
+  log.info('[App] Enabled Windows in-process GPU compatibility mode.')
+}
 
 // Enable system audio loopback capture on macOS (12.3+ via ScreenCaptureKit,
 // 14.4+ via CoreAudio Taps with `forceCoreAudioTap: true`). Must run before

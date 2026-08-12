@@ -43,6 +43,10 @@
 
 开源应用若没有代码签名证书，Windows 可能会显示 SmartScreen 或下载安全提示。不要因为提示而直接运行未知文件；应确认下载来源、检查仓库和发布说明，并优先使用可复现构建或可信发布者提供的安装包。
 
+### Windows GPU 兼容模式
+
+在 Windows 上，ScreenArc 会将 GPU 工作放在 Electron 主进程中运行。这样可绕开部分电脑因 Chromium 独立 GPU 子进程无法加载显卡驱动或沙盒依赖而导致的启动闪退。
+
 ### Linux
 
 ScreenArc 当前依赖 **X11**，不支持 Wayland。可以在终端执行 `echo $XDG_SESSION_TYPE` 检查会话类型；若显示 `wayland`，请在登录界面切换到 X11。
