@@ -146,6 +146,10 @@ export function EditorPage() {
       await loadProject(payload)
       useEditorStore.temporal.getState().clear()
     })
+    // Register the listener before asking the main process for project data.
+    // Sending on did-finish-load raced React's effects and could drop the only
+    // project:open event, leaving a newly recorded video unavailable in editor.
+    window.electronAPI.editorReady()
     return () => cleanup()
   }, [loadProject, initializePresets, initializeSettings])
 

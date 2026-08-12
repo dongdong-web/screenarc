@@ -1,4 +1,5 @@
 import { app, BrowserWindow, IpcMainEvent, IpcMainInvokeEvent } from 'electron'
+import log from 'electron-log/main'
 import { appState } from '../../state'
 
 export function handleGetPath(_event: IpcMainInvokeEvent, name: 'home' | 'userData' | 'desktop') {
@@ -52,4 +53,21 @@ export function updateTitleBarOverlay(_event: IpcMainEvent, options: { color: st
   if (editorWindow && !editorWindow.isDestroyed()) {
     editorWindow.setTitleBarOverlay(options)
   }
+}
+
+export function sendProjectToEditor(event: IpcMainEvent) {
+  const editorWindow = BrowserWindow.fromWebContents(event.sender)
+  const session = appState.currentEditorSessionFiles
+
+  if (editorWindow !== appState.editorWin || !session) {
+    log.warn('[EditorWindow] Ignored project request from a non-editor window or without a recording session.')
+    return
+  }
+
+  log.info('[EditorWindow] Renderer is ready. Sending project data.')
+  event.sender.send('project:open', {
+    videoPath: session.screenVideoPath,
+    metadataPath: session.metadataPath,
+    webcamVideoPath: session.webcamVideoPath,
+  })
 }

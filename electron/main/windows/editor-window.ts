@@ -1,7 +1,7 @@
 // Logic to create and manage the editor window.
 
 import log from 'electron-log/main'
-import { BrowserWindow } from 'electron'
+import { BrowserWindow, dialog } from 'electron'
 import path from 'node:path'
 import fs from 'node:fs/promises'
 import fsSync from 'node:fs'
@@ -110,19 +110,55 @@ export function createEditorWindow(
     appState.editorWin = null
   })
 
-  appState.editorWin.show()
+  const editorWindow = appState.editorWin
+  if (!editorWindow) return
 
   const editorUrl = VITE_DEV_SERVER_URL
     ? `${VITE_DEV_SERVER_URL}#editor`
     : formatUrl({ pathname: path.join(RENDERER_DIST, 'index.html'), protocol: 'file:', slashes: true, hash: 'editor' })
 
-  log.info(`[EditorWindow] Loading URL: ${editorUrl}`)
-  appState.editorWin.loadURL(editorUrl)
+  let loadErrorReported = false
+  const reportLoadError = (message: string, details: unknown) => {
+    log.error(message, details)
+    const editorWindow = appState.editorWin
+    if (loadErrorReported || !editorWindow || editorWindow.isDestroyed()) return
 
-  appState.editorWin.webContents.on('did-finish-load', () => {
-    log.info(`[EditorWindow] Finished loading. Sending project data.`)
-    appState.editorWin?.webContents.send('project:open', { videoPath, metadataPath, webcamVideoPath })
-    checkForUpdates(appState.editorWin)
+    loadErrorReported = true
+    dialog.showMessageBox(editorWindow, {
+      type: 'error',
+      title: 'ScreenArc 编辑器无法打开',
+      message: '编辑器页面未能正常加载。',
+      detail: '请保留本窗口并查看日志：%APPDATA%\\screenarc\\logs\\main.log。',
+    })
+  }
+
+  // Keep the loading window hidden until Chromium has produced a frame. Showing
+  // it before navigation left users staring at an indistinguishable white window
+  // whenever the renderer failed to start.
+  editorWindow.once('ready-to-show', () => {
+    if (!editorWindow.isDestroyed()) {
+      editorWindow.show()
+    }
+  })
+
+  editorWindow.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+    if (isMainFrame && errorCode !== -3) {
+      reportLoadError('[EditorWindow] Failed to load editor page.', { errorCode, errorDescription, validatedURL })
+    }
+  })
+
+  editorWindow.webContents.on('render-process-gone', (_event, details) => {
+    reportLoadError('[EditorWindow] Renderer process exited.', details)
+  })
+
+  log.info(`[EditorWindow] Loading URL: ${editorUrl}`)
+  editorWindow.webContents.on('did-finish-load', () => {
+    log.info('[EditorWindow] Finished loading. Waiting for renderer to request project data.')
+    checkForUpdates(editorWindow)
+  })
+
+  void editorWindow.loadURL(editorUrl).catch((error) => {
+    reportLoadError('[EditorWindow] loadURL rejected.', error)
   })
 }
 

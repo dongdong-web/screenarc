@@ -107,7 +107,7 @@
       "dist-electron/**/*",
       "binaries/**/*",
       "!dist/*.{AppImage,yml,yaml,exe,dmg,zip}",
-      "!dist/*-unpacked/"
+      "!dist/*-unpacked/**"
     ],
     "asar": true,
     "asarUnpack": [

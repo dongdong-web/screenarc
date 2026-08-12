@@ -158,6 +158,7 @@ export const electronAPI = {
       ipcRenderer.removeListener('project:open', listener)
     }
   },
+  editorReady: (): void => ipcRenderer.send('editor:ready'),
 
   readFile: (filePath: string): Promise<string> => ipcRenderer.invoke('fs:readFile', filePath),
 
