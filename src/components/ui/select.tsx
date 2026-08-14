@@ -162,7 +162,7 @@ const SelectContent = React.forwardRef<
         className={cn(
           'p-1.5', // Padding nhỏ hơn
           position === 'popper' &&
-            'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]',
+            'w-full min-w-[var(--radix-select-trigger-width)]',
         )}
       >
         {children}
