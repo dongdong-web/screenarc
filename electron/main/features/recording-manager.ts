@@ -672,17 +672,28 @@ export async function startRecording(options: any) {
     }
   } else if (source === 'area') {
     appState.recorderWin?.hide()
-    createSelectionWindow()
+    const selectionWindow = createSelectionWindow()
     const selectedGeometry = await new Promise<any | undefined>((resolve) => {
-      ipcMain.once('selection:complete', (_e, geo) => {
-        appState.selectionWin?.close()
-        resolve(geo)
-      })
-      ipcMain.once('selection:cancel', () => {
-        appState.selectionWin?.close()
-        appState.recorderWin?.show()
-        resolve(undefined)
-      })
+      let settled = false
+
+      const finish = (geometry: any | undefined) => {
+        if (settled) return
+        settled = true
+        ipcMain.removeListener('selection:complete', onComplete)
+        ipcMain.removeListener('selection:cancel', onCancel)
+        selectionWindow.removeListener('closed', onClosed)
+        if (!selectionWindow.isDestroyed()) selectionWindow.close()
+        if (!geometry) appState.recorderWin?.show()
+        resolve(geometry)
+      }
+
+      const onComplete = (_event: Electron.IpcMainEvent, geometry: any) => finish(geometry)
+      const onCancel = () => finish(undefined)
+      const onClosed = () => finish(undefined)
+
+      ipcMain.once('selection:complete', onComplete)
+      ipcMain.once('selection:cancel', onCancel)
+      selectionWindow.once('closed', onClosed)
     })
     if (!selectedGeometry) return { canceled: true }
 

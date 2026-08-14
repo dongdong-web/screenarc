@@ -242,6 +242,9 @@ export const electronAPI = {
       ipcRenderer.removeListener('window:state-changed', listener)
     }
   },
+  completeSelection: (geometry: { x: number; y: number; width: number; height: number }): void =>
+    ipcRenderer.send('selection:complete', geometry),
+  cancelSelection: (): void => ipcRenderer.send('selection:cancel'),
   // --- START OF CHANGES ---
   updateTitleBarOverlay: (options: { color: string; symbolColor: string }) => {
     ipcRenderer.send('window:update-title-bar-overlay', options)

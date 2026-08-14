@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron');
+const selectionAPI = window.electronAPI;
 
 const selectionBox = document.getElementById('selection-box');
 const sizeBadge = document.getElementById('size-badge');
@@ -148,14 +148,14 @@ function onMouseUp() {
 function onKeyDown(e) {
     if (e.key === 'Enter' && selection.width > 10 && selection.height > 10) {
         // We don't need to adjust size here, main process will do it.
-        ipcRenderer.send('selection:complete', {
+        selectionAPI.completeSelection({
             x: Math.round(selection.x),
             y: Math.round(selection.y),
             width: Math.round(selection.width),
             height: Math.round(selection.height),
         });
     } else if (e.key === 'Escape') {
-        ipcRenderer.send('selection:cancel');
+        selectionAPI.cancelSelection();
     }
 }
 

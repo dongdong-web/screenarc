@@ -3,7 +3,7 @@
 import { BrowserWindow } from 'electron'
 import path from 'node:path'
 import { appState } from '../state'
-import { VITE_DEV_SERVER_URL, RENDERER_DIST } from '../lib/constants'
+import { PRELOAD_SCRIPT, VITE_DEV_SERVER_URL, RENDERER_DIST } from '../lib/constants'
 
 function createTemporaryWindow(options: Electron.BrowserWindowConstructorOptions, htmlPath: string) {
   // Define the path to the icon, handling both development and production environments
@@ -19,12 +19,12 @@ function createTemporaryWindow(options: Electron.BrowserWindowConstructorOptions
     alwaysOnTop: true,
     resizable: false,
     webPreferences: {
-      // These standalone HTML overlays do not use Electron APIs. Do not load
-      // the application's contextBridge preload into a non-isolated page: it
-      // makes the preload fail and can contaminate the renderer process reused
-      // by the editor immediately after recording stops.
+      // Keep standalone overlays isolated. The selection page uses the
+      // contextBridge preload for its confirm/cancel IPC messages instead of
+      // calling require('electron') from an untrusted renderer context.
       contextIsolation: true,
       nodeIntegration: false,
+      ...options.webPreferences,
     },
   })
 
@@ -50,9 +50,22 @@ export function createSavingWindow() {
 }
 
 export function createSelectionWindow() {
-  appState.selectionWin = createTemporaryWindow({ fullscreen: true }, 'selection/index.html')
+  const selectionWindow = createTemporaryWindow(
+    { fullscreen: true, show: false, webPreferences: { preload: PRELOAD_SCRIPT } },
+    'selection/index.html',
+  )
+  appState.selectionWin = selectionWindow
 
-  appState.selectionWin.on('closed', () => {
+  selectionWindow.once('ready-to-show', () => {
+    if (!selectionWindow.isDestroyed()) {
+      selectionWindow.show()
+      selectionWindow.focus()
+    }
+  })
+
+  selectionWindow.on('closed', () => {
     appState.selectionWin = null
   })
+
+  return selectionWindow
 }
