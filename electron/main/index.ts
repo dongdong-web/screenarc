@@ -61,18 +61,18 @@ app.whenReady().then(async () => {
   if (process.platform === 'darwin') {
     const dockMenu = Menu.buildFromTemplate([
       {
-        label: 'New Default Recording',
+        label: '新建默认录制',
         click: () => {
           if (appState.editorWin && !appState.editorWin.isDestroyed()) {
             dialog.showErrorBox(
-              'Action Not Allowed',
-              'Please close the current editor session to start a new recording.',
+              '无法执行操作',
+              '请先关闭当前编辑会话，再开始新的录制。',
             )
             appState.editorWin.focus()
             return
           }
           if (appState.currentRecordingSession) {
-            dialog.showErrorBox('Recording in Progress', 'A recording is already in progress.')
+            dialog.showErrorBox('正在录制', '已有录制任务正在进行。')
             return
           }
 
@@ -91,15 +91,15 @@ app.whenReady().then(async () => {
         },
       },
       {
-        label: 'Import Video File...',
+        label: '导入视频文件…',
         click: () => {
           if (appState.editorWin && !appState.editorWin.isDestroyed()) {
-            dialog.showErrorBox('Action Not Allowed', 'Please close the current editor session to import a new video.')
+            dialog.showErrorBox('无法执行操作', '请先关闭当前编辑会话，再导入新视频。')
             appState.editorWin.focus()
             return
           }
           if (appState.currentRecordingSession) {
-            dialog.showErrorBox('Recording in Progress', 'A recording is already in progress.')
+            dialog.showErrorBox('正在录制', '已有录制任务正在进行。')
             return
           }
 

@@ -90,9 +90,9 @@ export function FocusPointPicker({ regionId, targetX, targetY, startTime, onTarg
   return (
     <div className="space-y-3">
       <div>
-        <h4 className="text-sm font-medium text-sidebar-foreground mb-1">Focus Point</h4>
+        <h4 className="text-sm font-medium text-sidebar-foreground mb-1">缩放焦点</h4>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Click and drag the circle to set the zoom point.
+          点击或拖动圆点以设置缩放焦点。
         </p>
       </div>
       <div
@@ -109,7 +109,7 @@ export function FocusPointPicker({ regionId, targetX, targetY, startTime, onTarg
           <img
             src={thumbnailUrl || '/placeholder.svg'}
             className="w-full h-full object-contain pointer-events-none"
-            alt="Video Frame Preview"
+            alt="视频帧预览"
           />
         )}
         <div

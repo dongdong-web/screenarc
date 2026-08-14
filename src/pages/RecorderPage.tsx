@@ -310,11 +310,11 @@ export function RecorderPage() {
           setIsRecording(false)
           window.electronAPI.showMessageBox({
             type: 'warning',
-            title: 'Screen Recording Permission Required',
-            message: 'ScreenArc could not access the screen.',
+            title: '需要屏幕录制权限',
+            message: 'ScreenArc 无法访问屏幕。',
             detail:
               'Go to System Settings → Privacy & Security → Screen Recording, enable the toggle next to "Electron" (the dev build), then restart the app and try again.',
-            buttons: ['OK'],
+            buttons: ['确定'],
           })
           return
         }
@@ -342,11 +342,11 @@ export function RecorderPage() {
           setIsRecording(false)
           window.electronAPI.showMessageBox({
             type: 'warning',
-            title: 'System Audio Permission Required',
-            message: 'ScreenArc could not access system audio.',
+            title: '需要系统音频权限',
+            message: 'ScreenArc 无法访问系统音频。',
             detail:
               'Go to System Settings → Privacy & Security → Screen Recording (macOS 14.3 and earlier) or Microphone (macOS 14.4+) and enable the toggle next to "Electron". Then re-enable System audio in the recorder and try again.',
-            buttons: ['OK'],
+            buttons: ['确定'],
           })
           return
         }
@@ -431,7 +431,7 @@ export function RecorderPage() {
               onClick={() => window.electronAPI.closeWindow()}
               style={{ WebkitAppRegion: 'no-drag' }}
               className="absolute -top-2.5 -left-2.5 z-20 flex items-center justify-center w-6 h-6 rounded-full bg-destructive/90 hover:bg-destructive text-white shadow-lg transition-all hover:scale-110"
-              aria-label="Close Recorder"
+              aria-label="关闭录制器"
               disabled={isRecording || isBusy}
             >
               <X className="w-3.5 h-3.5" />
@@ -446,14 +446,14 @@ export function RecorderPage() {
                 icon={<DeviceDesktop size={16} />}
                 isActive={source === 'fullscreen'}
                 onClick={() => setSource('fullscreen')}
-                tooltip="Full Screen"
+                tooltip="全屏"
                 disabled={isRecording || isBusy}
               />
               <SourceButton
                 icon={<Marquee2 size={16} />}
                 isActive={source === 'area'}
                 onClick={() => setSource('area')}
-                tooltip="Area"
+                tooltip="选区"
                 disabled={isRecording || isBusy}
               />
             </div>
@@ -470,7 +470,7 @@ export function RecorderPage() {
                 <SelectTrigger
                   variant="minimal"
                   className="w-auto min-w-[120px] max-w-[150px] h-9"
-                  aria-label="Select display"
+                  aria-label="选择显示器"
                 >
                   <SelectValue asChild>
                     <div className="flex items-center gap-1.5 text-xs">
@@ -498,7 +498,7 @@ export function RecorderPage() {
                 <SelectTrigger
                   variant="minimal"
                   className="w-auto min-w-[120px] max-w-[150px] h-9"
-                  aria-label="Select webcam"
+                  aria-label="选择摄像头"
                 >
                   <SelectValue asChild>
                     <div className="flex items-center gap-1.5 text-xs">
@@ -508,13 +508,13 @@ export function RecorderPage() {
                         <DeviceComputerCameraOff size={14} className="text-muted-foreground/60" />
                       )}
                       <span className={cn('truncate', selectedWebcamId === 'none' && 'text-muted-foreground')}>
-                        {webcams.find((w) => w.id === selectedWebcamId)?.name || 'No webcam'}
+                        {webcams.find((w) => w.id === selectedWebcamId)?.name || '不录制摄像头'}
                       </span>
                     </div>
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">No webcam</SelectItem>
+                  <SelectItem value="none">不录制摄像头</SelectItem>
                   {webcams.map((c) => (
                     <SelectItem key={c.id} value={c.id}>
                       {c.name}
@@ -531,7 +531,7 @@ export function RecorderPage() {
                 <SelectTrigger
                   variant="minimal"
                   className="w-auto min-w-[120px] max-w-[150px] h-9"
-                  aria-label="Select microphone"
+                  aria-label="选择麦克风"
                 >
                   <SelectValue asChild>
                     <div className="flex items-center gap-1.5 text-xs">
@@ -541,13 +541,13 @@ export function RecorderPage() {
                         <MicrophoneOff size={14} className="text-muted-foreground/60" />
                       )}
                       <span className={cn('truncate', selectedMicId === 'none' && 'text-muted-foreground')}>
-                        {mics.find((m) => m.id === selectedMicId)?.name || 'No microphone'}
+                        {mics.find((m) => m.id === selectedMicId)?.name || '不录制麦克风'}
                       </span>
                     </div>
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">No microphone</SelectItem>
+                  <SelectItem value="none">不录制麦克风</SelectItem>
                   {mics.map((m) => (
                     <SelectItem key={m.id} value={m.id}>
                       {m.name}
@@ -581,11 +581,11 @@ export function RecorderPage() {
                   }}
                   disabled={isRecording || isBusy}
                   aria-pressed={systemAudioEnabled}
-                  aria-label={systemAudioEnabled ? 'Disable system audio recording' : 'Enable system audio recording'}
+                  aria-label={systemAudioEnabled ? '关闭系统音频录制' : '开启系统音频录制'}
                   title={
                     systemAudioEnabled
-                      ? 'System audio: ON (recording desktop sound)'
-                      : 'System audio: OFF (click to enable)'
+                      ? '系统音频：已开启（录制桌面声音）'
+                      : '系统音频：已关闭（点击开启）'
                   }
                   className={cn(
                     'flex items-center gap-1.5 h-9 px-2.5 rounded-lg border text-xs transition-all',
@@ -596,7 +596,7 @@ export function RecorderPage() {
                   )}
                 >
                   {systemAudioEnabled ? <Volume size={14} /> : <VolumeOff size={14} />}
-                  <span className="truncate">System audio</span>
+                  <span className="truncate">系统音频</span>
                 </button>
               )}
             </div>
@@ -609,7 +609,7 @@ export function RecorderPage() {
                 <div className="flex items-center gap-1.5" style={{ WebkitAppRegion: 'no-drag' }}>
                   <Pointer size={14} className="text-muted-foreground/60" />
                   <Select value={String(cursorScale)} onValueChange={handleCursorScaleChange} disabled={isRecording || isBusy}>
-                    <SelectTrigger variant="minimal" className="w-[56px] h-9 text-xs" aria-label="Select cursor scale">
+                    <SelectTrigger variant="minimal" className="w-[56px] h-9 text-xs" aria-label="选择光标大小">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent align="end">
@@ -631,7 +631,7 @@ export function RecorderPage() {
                 {isRecording ? (
                   <Button
                     onClick={handleStop}
-                    title="Stop Recording"
+                    title="停止录制"
                     variant="destructive"
                     size="icon"
                     className="h-10 w-10 rounded-full shadow-lg"
@@ -641,7 +641,7 @@ export function RecorderPage() {
                 ) : (
                   <Button
                     onClick={handleStart}
-                    title="Record"
+                    title="开始录制"
                     disabled={isInitializing || isBusy}
                     size="icon"
                     className="h-10 w-10 rounded-full shadow-lg"
@@ -651,7 +651,7 @@ export function RecorderPage() {
                 )}
                 <Button
                   onClick={handleLoadVideo}
-                  title="Load from video"
+                  title="导入视频"
                   disabled={isInitializing || isBusy || isRecording}
                   variant="secondary"
                   size="icon"

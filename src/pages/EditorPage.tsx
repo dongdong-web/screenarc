@@ -158,19 +158,19 @@ export function EditorPage() {
       case 'saving':
         return (
           <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" /> 正在保存…
           </>
         )
       case 'saved':
         return (
           <>
-            <Check className="w-4 h-4 mr-2" /> Saved!
+            <Check className="w-4 h-4 mr-2" /> 已保存！
           </>
         )
       default:
         return (
           <>
-            <Stack3 className="w-4 h-4 mr-2" /> Presets
+            <Stack3 className="w-4 h-4 mr-2" /> 预设
           </>
         )
     }
@@ -199,7 +199,7 @@ export function EditorPage() {
         variant="ghost"
         size="icon"
         onClick={() => setSettingsModalOpen(true)}
-        aria-label="Open Settings"
+        aria-label="打开设置"
         className={cn('h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg')}
       >
         <Settings className="w-4 h-4" />

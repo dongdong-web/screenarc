@@ -13,14 +13,14 @@ export function GeneralTab() {
 
   return (
     <div className="p-8">
-      <h2 className="text-lg font-semibold text-foreground mb-6">General Settings</h2>
+      <h2 className="text-lg font-semibold text-foreground mb-6">通用设置</h2>
 
       <div className="space-y-8">
         {/* Mode Setting */}
         <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border border-border">
           <div>
-            <h3 className="font-medium text-foreground">Appearance</h3>
-            <p className="text-sm text-muted-foreground">Switch between light and dark mode.</p>
+            <h3 className="font-medium text-foreground">外观</h3>
+            <p className="text-sm text-muted-foreground">切换浅色或深色模式。</p>
           </div>
           <div className="flex items-center gap-3">
             <Sun className="w-5 h-5 text-muted-foreground" />

@@ -33,7 +33,7 @@ const WallpaperSelector = () => {
         >
           <img
             src={wallpaper.thumbnailUrl || '/placeholder.svg'}
-            alt={`Wallpaper ${index + 1}`}
+          alt={`壁纸 ${index + 1}`}
             className="w-full h-full object-cover"
           />
           {frameStyles.background.thumbnailUrl === wallpaper.thumbnailUrl && (
@@ -100,7 +100,7 @@ const ColorSelector = () => {
           'relative w-full aspect-square rounded-lg border-2 cursor-pointer transition-all duration-200 hover:scale-105',
           'border-sidebar-border hover:border-primary/50',
         )}
-        title="Custom Color"
+        title="自定义颜色"
       >
         <input
           type="color"
@@ -165,17 +165,17 @@ const GradientSelector = () => {
     <div className="space-y-5">
       <div className="grid grid-cols-12 gap-5">
         <div className="col-span-4">
-          <h5 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Colors</h5>
+          <h5 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">颜色</h5>
           <div className="flex flex-col items-start gap-3">
             <ColorPickerRoundedRect
-              label="Start"
+              label="起始"
               color={localGradient.start}
               name="gradientStart"
               onChange={(e) => setLocalGradient((p) => ({ ...p, start: e.target.value }))}
               size="sm"
             />
             <ColorPickerRoundedRect
-              label="End"
+              label="结束"
               color={localGradient.end}
               name="gradientEnd"
               onChange={(e) => setLocalGradient((p) => ({ ...p, end: e.target.value }))}
@@ -184,7 +184,7 @@ const GradientSelector = () => {
           </div>
         </div>
         <div className="col-span-8">
-          <h5 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Direction</h5>
+          <h5 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">方向</h5>
           <div className="grid grid-cols-5 gap-1.5">
             {GRADIENT_PRESETS.map((preset) => {
               let bgStyle
@@ -224,7 +224,7 @@ const GradientSelector = () => {
       </div>
       <Button onClick={handleApplyGradient} size="sm" className="w-full">
         <PaintBrushIcon className="w-4 h-4 mr-2" />
-        Apply Colors
+        应用颜色
       </Button>
     </div>
   )
@@ -266,7 +266,7 @@ const ImageSelector = () => {
           <>
             <img
               src={frameStyles.background.imageUrl || '/placeholder.svg'}
-              alt="Background"
+              alt="背景"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-sm">
@@ -279,7 +279,7 @@ const ImageSelector = () => {
                 className="px-4 py-2 bg-destructive text-destructive-foreground rounded-lg font-medium text-sm hover:bg-destructive/90 transition-colors shadow-lg"
               >
                 <X className="w-4 h-4 mr-1.5 inline" />
-                Remove
+                移除
               </button>
               <button
                 onClick={(e) => {
@@ -290,7 +290,7 @@ const ImageSelector = () => {
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors shadow-lg"
               >
                 <CloudUpload className="w-4 h-4 mr-1.5 inline" />
-                Replace
+                替换
               </button>
             </div>
           </>
@@ -300,8 +300,8 @@ const ImageSelector = () => {
               <CloudUpload className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground mb-1">Upload Image</p>
-              <p className="text-xs text-muted-foreground">PNG, JPG, GIF up to 10MB</p>
+              <p className="text-sm font-semibold text-foreground mb-1">上传图片</p>
+              <p className="text-xs text-muted-foreground">支持 PNG、JPG、GIF，最大 10MB</p>
             </div>
           </div>
         )}
@@ -322,17 +322,17 @@ export function BackgroundSettings() {
   }, [frameStyles.background.type])
 
   const tabs = [
-    { id: 'wallpaper', name: 'Wallpaper', component: <WallpaperSelector /> },
-    { id: 'color', name: 'Color', component: <ColorSelector /> },
-    { id: 'gradient', name: 'Gradient', component: <GradientSelector /> },
-    { id: 'image', name: 'Image', component: <ImageSelector /> },
+    { id: 'wallpaper', name: '壁纸', component: <WallpaperSelector /> },
+    { id: 'color', name: '颜色', component: <ColorSelector /> },
+    { id: 'gradient', name: '渐变', component: <GradientSelector /> },
+    { id: 'image', name: '图片', component: <ImageSelector /> },
   ]
 
   return (
     <ControlGroup
-      label="Background"
+      label="背景"
       icon={<Photo className="w-4 h-4 text-primary" />}
-      description="Choose how your video background looks"
+      description="选择视频背景样式"
     >
       <div className="space-y-6">
         <div className="relative p-1 bg-muted/50 rounded-full">

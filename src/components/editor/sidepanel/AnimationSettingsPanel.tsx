@@ -11,6 +11,8 @@ import { Collapse } from '../../ui/collapse'
 
 const speedOptions = Object.keys(ZOOM.SPEED_OPTIONS)
 const easingOptions = Object.keys(EASING_MAP)
+const speedLabels: Record<string, string> = { Slow: '慢', Mellow: '柔和', Fast: '快', Snappy: '干脆' }
+const easingLabels: Record<string, string> = { Smooth: '平滑', Balanced: '均衡', Dynamic: '动态', Linear: '线性' }
 
 export function AnimationSettingsPanel() {
   const { applyAnimationSettingsToAll } = useEditorStore.getState()
@@ -46,8 +48,8 @@ export function AnimationSettingsPanel() {
             <Route className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-sidebar-foreground">Global Animation</h2>
-            <p className="text-sm text-muted-foreground">Set default animation for all zoom regions</p>
+            <h2 className="text-lg font-semibold text-sidebar-foreground">全局动画</h2>
+            <p className="text-sm text-muted-foreground">为所有缩放片段设置默认动画</p>
           </div>
         </div>
       </div>
@@ -56,8 +58,8 @@ export function AnimationSettingsPanel() {
       <div className="flex-1 overflow-y-auto stable-scrollbar p-6 space-y-6">
         {/* Animation Settings Collapse */}
         <Collapse
-          title="Animation Settings"
-          description="These settings will be applied to all zoom regions."
+          title="动画设置"
+          description="这些设置将应用到所有缩放片段。"
           icon={<Route />}
           defaultOpen={true}
           onReset={handleResetAnimation}
@@ -65,7 +67,7 @@ export function AnimationSettingsPanel() {
           <div className="space-y-6 pt-2">
             {/* Speed Selector */}
             <div className="space-y-3">
-              <label className="text-sm font-medium text-sidebar-foreground">Speed</label>
+              <label className="text-sm font-medium text-sidebar-foreground">速度</label>
               <div className="grid grid-cols-4 gap-1 p-1 bg-muted/50 rounded-lg">
                 {speedOptions.map((s) => (
                   <button
@@ -78,7 +80,7 @@ export function AnimationSettingsPanel() {
                         : 'text-muted-foreground hover:text-foreground',
                     )}
                   >
-                    {s}
+                    {speedLabels[s] || s}
                   </button>
                 ))}
               </div>
@@ -86,7 +88,7 @@ export function AnimationSettingsPanel() {
 
             {/* Easing Selector */}
             <div className="space-y-3">
-              <label className="text-sm font-medium text-sidebar-foreground">Style (Easing)</label>
+              <label className="text-sm font-medium text-sidebar-foreground">过渡风格</label>
               <Select value={easing} onValueChange={setEasing}>
                 <SelectTrigger className="h-10 bg-background/50">
                   <SelectValue />
@@ -94,7 +96,7 @@ export function AnimationSettingsPanel() {
                 <SelectContent>
                   {easingOptions.map((e) => (
                     <SelectItem key={e} value={e}>
-                      {e}
+                      {easingLabels[e] || e}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -104,7 +106,7 @@ export function AnimationSettingsPanel() {
             {/* Zoom Level */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-sidebar-foreground">Zoom Level</label>
+                <label className="text-sm font-medium text-sidebar-foreground">缩放等级</label>
                 <span className="text-xs font-semibold text-primary tabular-nums">{zoomLevel.toFixed(1)}x</span>
               </div>
               <Slider
@@ -129,12 +131,12 @@ export function AnimationSettingsPanel() {
                 {applyStatus === 'idle' ? (
                   <>
                     <Wand className="w-4 h-4 mr-2" />
-                    Apply to All Zoom Regions
+                    应用到所有缩放片段
                   </>
                 ) : (
                   <>
                     <Check className="w-5 h-5 mr-2" />
-                    Applied!
+                    已应用！
                   </>
                 )}
               </Button>

@@ -48,7 +48,7 @@ export function Collapse({
             <div
               onClick={handleResetClick}
               className="p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer hover:bg-accent/70"
-              aria-label={`Reset ${title}`}
+              aria-label={`重置${title}`}
             >
               <Refresh className="w-3.5 h-3.5 text-muted-foreground" />
             </div>

@@ -352,8 +352,8 @@ export const Preview = memo(
                 <Movie className="w-10 h-10 text-primary/60" />
               </div>
               <div className="text-center space-y-1">
-                <p className="text-lg font-semibold text-foreground/80">No project loaded</p>
-                <p className="text-sm text-muted-foreground/70">Load a project to begin editing</p>
+                <p className="text-lg font-semibold text-foreground/80">未加载项目</p>
+                <p className="text-sm text-muted-foreground/70">请导入视频以开始编辑</p>
               </div>
             </div>
           )}
@@ -401,7 +401,7 @@ export const Preview = memo(
                 variant="ghost"
                 size="icon"
                 onClick={togglePlay}
-                title="Play/Pause (Space)"
+                title="播放/暂停（空格）"
                 className="flex-shrink-0 text-foreground hover:text-foreground hover:bg-accent h-10 w-10 rounded-xl transition-all duration-150"
               >
                 {isPlaying ? <PlayerPause className="w-4 h-4" /> : <PlayerPlay className="w-4 h-4 ml-0.5" />}
@@ -410,7 +410,7 @@ export const Preview = memo(
                 variant="ghost"
                 size="icon"
                 onClick={handleRewind}
-                title="Rewind to Start"
+                title="回到开头"
                 className="flex-shrink-0 text-foreground hover:text-foreground hover:bg-accent h-10 w-10 rounded-xl transition-all duration-150"
               >
                 <RewindIcon className="w-4 h-4" />
@@ -419,7 +419,7 @@ export const Preview = memo(
                 variant="ghost"
                 size="icon"
                 onClick={() => onSeekFrame('prev')}
-                title="Previous Frame (J)"
+                title="上一帧（J）"
                 className="flex-shrink-0 text-foreground hover:text-foreground hover:bg-accent h-10 w-10 rounded-xl transition-all duration-150"
               >
                 <PlayerSkipBack className="w-4 h-4" />
@@ -428,7 +428,7 @@ export const Preview = memo(
                 variant="ghost"
                 size="icon"
                 onClick={() => onSeekFrame('next')}
-                title="Next Frame (K)"
+                title="下一帧（K）"
                 className="flex-shrink-0 text-foreground hover:text-foreground hover:bg-accent h-10 w-10 rounded-xl transition-all duration-150"
               >
                 <PlayerSkipForward className="w-4 h-4" />

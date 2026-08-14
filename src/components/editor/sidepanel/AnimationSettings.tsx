@@ -10,6 +10,8 @@ import { Slider } from '../../ui/slider'
 
 const speedOptions = Object.keys(ZOOM.SPEED_OPTIONS)
 const easingOptions = Object.keys(EASING_MAP)
+const speedLabels: Record<string, string> = { Slow: '慢', Mellow: '柔和', Fast: '快', Snappy: '干脆' }
+const easingLabels: Record<string, string> = { Smooth: '平滑', Balanced: '均衡', Dynamic: '动态', Linear: '线性' }
 
 interface AnimationSettingsProps {
   region: ZoomRegion
@@ -46,8 +48,8 @@ export function AnimationSettings({ region }: AnimationSettingsProps) {
 
   return (
     <Collapse
-      title="Animation & Level"
-      description="Adjust transition and zoom level"
+      title="动画与缩放"
+      description="调整过渡和缩放等级"
       icon={<Route className="w-4 h-4 text-primary" />}
       defaultOpen={true}
       onReset={handleResetAnimation}
@@ -55,7 +57,7 @@ export function AnimationSettings({ region }: AnimationSettingsProps) {
       <div className="space-y-6">
         {/* Speed Selector */}
         <div className="space-y-3">
-          <label className="text-sm font-medium text-sidebar-foreground">Speed</label>
+          <label className="text-sm font-medium text-sidebar-foreground">速度</label>
           <div className="grid grid-cols-4 gap-1 p-1 bg-muted/50 rounded-lg">
             {speedOptions.map((speed) => (
               <button
@@ -68,7 +70,7 @@ export function AnimationSettings({ region }: AnimationSettingsProps) {
                     : 'text-muted-foreground hover:text-foreground',
                 )}
               >
-                {speed}
+                {speedLabels[speed] || speed}
               </button>
             ))}
           </div>
@@ -76,7 +78,7 @@ export function AnimationSettings({ region }: AnimationSettingsProps) {
 
         {/* Easing Selector */}
         <div className="space-y-3">
-          <label className="text-sm font-medium text-sidebar-foreground">Style (Easing)</label>
+          <label className="text-sm font-medium text-sidebar-foreground">过渡风格</label>
           <Select value={region.easing} onValueChange={handleEasingChange}>
             <SelectTrigger className="h-10 bg-background/50">
               <SelectValue />
@@ -84,7 +86,7 @@ export function AnimationSettings({ region }: AnimationSettingsProps) {
             <SelectContent>
               {easingOptions.map((easing) => (
                 <SelectItem key={easing} value={easing}>
-                  {easing}
+                  {easingLabels[easing] || easing}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -94,7 +96,7 @@ export function AnimationSettings({ region }: AnimationSettingsProps) {
         {/* Zoom Level */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-sidebar-foreground">Zoom Level</label>
+            <label className="text-sm font-medium text-sidebar-foreground">缩放等级</label>
             <span className="text-xs font-semibold text-primary tabular-nums">{region.zoomLevel.toFixed(1)}x</span>
           </div>
           <Slider

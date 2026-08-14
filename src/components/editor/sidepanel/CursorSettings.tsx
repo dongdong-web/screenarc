@@ -22,6 +22,7 @@ const POST_PROCESSING_SCALES = [
 ]
 
 const easingOptions = Object.keys(EASING_MAP)
+const easingLabels: Record<string, string> = { Smooth: '平滑', Balanced: '均衡', Dynamic: '动态', Linear: '线性' }
 
 export function CursorSettings() {
   const {
@@ -152,15 +153,15 @@ export function CursorSettings() {
             <Pointer className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-sidebar-foreground">Cursor Settings</h2>
-            <p className="text-sm text-muted-foreground">Adjust the rendered cursor appearance</p>
+            <h2 className="text-lg font-semibold text-sidebar-foreground">光标设置</h2>
+            <p className="text-sm text-muted-foreground">调整成片中的光标外观</p>
           </div>
         </div>
       </div>
       <div className="flex-1 p-6 space-y-6 overflow-y-auto stable-scrollbar">
-        <ControlGroup label="Visibility">
+        <ControlGroup label="显示">
           <div className="flex items-center justify-between p-3 rounded-lg bg-sidebar-accent/30 border border-sidebar-border">
-            <span className="text-sm font-medium text-sidebar-foreground">Show Cursor</span>
+            <span className="text-sm font-medium text-sidebar-foreground">显示光标</span>
             <Switch
               checked={cursorStyles.showCursor}
               onCheckedChange={(v) => updateCursorStyle({ showCursor: v })}
@@ -169,14 +170,14 @@ export function CursorSettings() {
           </div>
         </ControlGroup>
         <Collapse
-          title="Cursor Theme"
-          description="Change the cursor style in the video"
+          title="光标主题"
+          description="更改视频中的光标样式"
           icon={<Pointer className="w-4 h-4 text-primary" />}
           defaultOpen={true}
           onReset={isCustomizationSupported ? handleResetTheme : undefined}
         >
           <div className="space-y-3">
-            <label className="text-sm font-medium text-sidebar-foreground flex items-center gap-2">Theme</label>
+            <label className="text-sm font-medium text-sidebar-foreground flex items-center gap-2">主题</label>
             <Select
               value={isCustomizationSupported ? cursorThemeName : 'Default'}
               onValueChange={handleThemeChange}
@@ -194,19 +195,19 @@ export function CursorSettings() {
               </SelectContent>
             </Select>
             {!isCustomizationSupported && (
-              <p className="text-xs text-muted-foreground pt-1">Cursor themes are available on Windows and macOS.</p>
+              <p className="text-xs text-muted-foreground pt-1">光标主题仅在 Windows 和 macOS 上可用。</p>
             )}
           </div>
         </Collapse>
         <Collapse
-          title="Cursor Size"
-          description="Change the cursor size in the final video"
+          title="光标大小"
+          description="更改成片中的光标大小"
           icon={<Pointer className="w-4 h-4 text-primary" />}
           defaultOpen={true}
           onReset={isCustomizationSupported ? handleResetSize : undefined}
         >
           <div className="space-y-3">
-            <label className="text-sm font-medium text-sidebar-foreground flex items-center gap-2">Scale</label>
+            <label className="text-sm font-medium text-sidebar-foreground flex items-center gap-2">缩放</label>
             <div
               className={cn(
                 'grid grid-cols-4 gap-1 p-1 rounded-lg',
@@ -233,23 +234,23 @@ export function CursorSettings() {
             </div>
             {!isCustomizationSupported && (
               <p className="text-xs text-muted-foreground pt-1">
-                Virtual cursor sizing is available on Windows and macOS.
+                虚拟光标大小仅在 Windows 和 macOS 上可用。
               </p>
             )}
           </div>
         </Collapse>
         <Collapse
-          title="Click Effects"
-          description="Add visual feedback for mouse clicks"
+          title="点击效果"
+          description="为鼠标点击添加视觉反馈"
           icon={<HandClick className="w-4 h-4 text-primary" />}
           defaultOpen={false}
           onReset={handleResetClickEffects}
         >
           <div className="space-y-6">
             <ControlGroup
-              label="Click Ripple"
+              label="点击波纹"
               icon={<SparklesIcon className="w-4 h-4 text-primary/80" />}
-              description="An expanding circle effect on click."
+              description="点击时出现扩散圆环效果。"
             >
               <div className="space-y-4 pt-2">
                 <div className="flex items-center justify-between w-full">
@@ -257,7 +258,7 @@ export function CursorSettings() {
                     htmlFor="click-ripple-effect"
                     className={`text-sm font-medium ${!cursorStyles.clickRippleEffect ? 'text-muted-foreground' : 'text-foreground/80'}`}
                   >
-                    Visibility
+                    显示
                   </label>
                   <Switch
                     id="click-ripple-effect"
@@ -268,7 +269,7 @@ export function CursorSettings() {
                 <div className={`space-y-4 ${!cursorStyles.clickRippleEffect ? 'opacity-70' : ''}`}>
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Size (Radius)</span>
+                      <span className="text-sm text-muted-foreground">大小（半径）</span>
                       <span className="text-xs font-semibold text-primary tabular-nums">
                         {cursorStyles.clickRippleSize}px
                       </span>
@@ -284,7 +285,7 @@ export function CursorSettings() {
                   </div>
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Duration</span>
+                      <span className="text-sm text-muted-foreground">时长</span>
                       <span className="text-xs font-semibold text-primary tabular-nums">
                         {cursorStyles.clickRippleDuration.toFixed(2)}s
                       </span>
@@ -301,7 +302,7 @@ export function CursorSettings() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <ColorPicker
-                        label="Color"
+                        label="颜色"
                         value={rippleHex}
                         onChange={handleRippleColorChange}
                         disabled={!cursorStyles.clickRippleEffect}
@@ -309,7 +310,7 @@ export function CursorSettings() {
                     </div>
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Opacity</span>
+                        <span className="text-sm text-muted-foreground">不透明度</span>
                         <span className="text-xs font-semibold text-primary tabular-nums">
                           {Math.round(rippleAlpha * 100)}%
                         </span>
@@ -328,9 +329,9 @@ export function CursorSettings() {
               </div>
             </ControlGroup>
             <ControlGroup
-              label="Click Scale"
+              label="点击缩放"
               icon={<Pointer className="w-4 h-4 text-primary/80" />}
-              description="A subtle scaling animation on click."
+              description="点击时出现轻微缩放动画。"
             >
               <div className="space-y-4 pt-2">
                 <div className="flex items-center justify-between w-full">
@@ -338,7 +339,7 @@ export function CursorSettings() {
                     htmlFor="click-scale-effect"
                     className={`text-sm font-medium ${!cursorStyles.clickScaleEffect ? 'text-muted-foreground' : 'text-foreground/80'}`}
                   >
-                    Visibility
+                    显示
                   </label>
                   <Switch
                     id="click-scale-effect"
@@ -349,7 +350,7 @@ export function CursorSettings() {
                 <div className={`space-y-4 ${!cursorStyles.clickScaleEffect ? 'opacity-70' : ''}`}>
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Scale Amount</span>
+                      <span className="text-sm text-muted-foreground">缩放幅度</span>
                       <span className="text-xs font-semibold text-primary tabular-nums">
                         {cursorStyles.clickScaleAmount.toFixed(2)}x
                       </span>
@@ -365,7 +366,7 @@ export function CursorSettings() {
                   </div>
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Duration</span>
+                      <span className="text-sm text-muted-foreground">时长</span>
                       <span className="text-xs font-semibold text-primary tabular-nums">
                         {cursorStyles.clickScaleDuration.toFixed(2)}s
                       </span>
@@ -386,7 +387,7 @@ export function CursorSettings() {
                         !cursorStyles.clickScaleEffect ? 'text-muted-foreground/70' : 'text-muted-foreground',
                       )}
                     >
-                      Easing Style
+                      过渡风格
                     </label>
                     <Select
                       disabled={!cursorStyles.clickScaleEffect}
@@ -401,7 +402,7 @@ export function CursorSettings() {
                       <SelectContent>
                         {easingOptions.map((easing) => (
                           <SelectItem key={easing} value={easing}>
-                            {easing}
+                            {easingLabels[easing] || easing}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -413,8 +414,8 @@ export function CursorSettings() {
           </div>
         </Collapse>
         <Collapse
-          title="Cursor Shadow"
-          description="Add a drop shadow for better visibility"
+          title="光标阴影"
+          description="添加投影以提高可见性"
           icon={<Shadow className="w-4 h-4 text-primary" />}
           defaultOpen={false}
           onReset={handleResetShadow}
@@ -422,7 +423,7 @@ export function CursorSettings() {
           <div className="space-y-4">
             <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Blur</span>
+                <span className="text-sm text-muted-foreground">模糊</span>
                 <span className="text-xs font-semibold text-primary tabular-nums">{cursorStyles.shadowBlur}px</span>
               </div>
               <Slider
@@ -437,7 +438,7 @@ export function CursorSettings() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Offset X</span>
+                  <span className="text-sm text-muted-foreground">水平偏移</span>
                   <span className="text-xs font-semibold text-primary tabular-nums">
                     {cursorStyles.shadowOffsetX}px
                   </span>
@@ -453,7 +454,7 @@ export function CursorSettings() {
               </div>
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Offset Y</span>
+                  <span className="text-sm text-muted-foreground">垂直偏移</span>
                   <span className="text-xs font-semibold text-primary tabular-nums">
                     {cursorStyles.shadowOffsetY}px
                   </span>
@@ -471,7 +472,7 @@ export function CursorSettings() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <ColorPicker
-                  label="Color"
+                  label="颜色"
                   value={shadowHex}
                   onChange={handleShadowColorChange}
                   disabled={!cursorStyles.showCursor}
@@ -479,7 +480,7 @@ export function CursorSettings() {
               </div>
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Opacity</span>
+                  <span className="text-sm text-muted-foreground">不透明度</span>
                   <span className="text-xs font-semibold text-primary tabular-nums">
                     {Math.round(shadowAlpha * 100)}%
                   </span>

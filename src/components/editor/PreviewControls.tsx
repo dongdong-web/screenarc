@@ -61,21 +61,21 @@ export function PreviewControls() {
     <div className="h-18 bg-card/95 backdrop-blur-xl border-t border-border/60 flex items-center justify-between px-6 shadow-lg">
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <ToolbarButton title="Add Zoom Region" onClick={() => addZoomRegion()} disabled={!!selectedRegionId}>
+          <ToolbarButton title="添加缩放片段" onClick={() => addZoomRegion()} disabled={!!selectedRegionId}>
             <ZoomIn className="w-4 h-4" />
-            <span>Zoom</span>
+            <span>缩放</span>
           </ToolbarButton>
-          <ToolbarButton title="Add Cut Region" onClick={() => addCutRegion()} disabled={!!selectedRegionId}>
+          <ToolbarButton title="添加裁剪片段" onClick={() => addCutRegion()} disabled={!!selectedRegionId}>
             <Scissors className="w-4 h-4" />
-            <span>Trim</span>
+            <span>裁剪</span>
           </ToolbarButton>
-          <ToolbarButton title="Add Speed Region" onClick={() => addSpeedRegion()} disabled={!!selectedRegionId}>
+          <ToolbarButton title="添加变速片段" onClick={() => addSpeedRegion()} disabled={!!selectedRegionId}>
             <PlayerTrackNext className="w-4 h-4" />
-            <span>Speed</span>
+            <span>变速</span>
           </ToolbarButton>
           <ToolbarButton
             variant="icon"
-            title="Delete Selected Region"
+            title="删除所选片段"
             onClick={handleDelete}
             disabled={!selectedRegionId}
           >
@@ -86,12 +86,12 @@ export function PreviewControls() {
         <div className="h-8 w-px bg-border" />
 
         <div className="flex items-center gap-2">
-          <ToolbarButton variant="icon" title="Undo (Ctrl+Z)" onClick={() => undo()} disabled={pastStates.length === 0}>
+          <ToolbarButton variant="icon" title="撤销 (Ctrl+Z)" onClick={() => undo()} disabled={pastStates.length === 0}>
             <ArrowBackUp className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton
             variant="icon"
-            title="Redo (Ctrl+Y)"
+            title="重做 (Ctrl+Y)"
             onClick={() => redo()}
             disabled={futureStates.length === 0}
           >
@@ -109,18 +109,18 @@ export function PreviewControls() {
 
       {/* Right Controls */}
       <div className="flex items-center gap-3">
-        <span className="text-sm font-semibold text-muted-foreground">Aspect:</span>
+        <span className="text-sm font-semibold text-muted-foreground">比例：</span>
         <div className="w-40">
           <Select value={aspectRatio} onValueChange={(value) => setAspectRatio(value as AspectRatio)}>
             <SelectTrigger className="h-10 text-sm border-border bg-card shadow-md">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="16:9">16:9 Landscape</SelectItem>
-              <SelectItem value="9:16">9:16 Portrait</SelectItem>
-              <SelectItem value="4:3">4:3 Standard</SelectItem>
-              <SelectItem value="3:4">3:4 Tall</SelectItem>
-              <SelectItem value="1:1">1:1 Square</SelectItem>
+              <SelectItem value="16:9">16:9 横屏</SelectItem>
+              <SelectItem value="9:16">9:16 竖屏</SelectItem>
+              <SelectItem value="4:3">4:3 标准</SelectItem>
+              <SelectItem value="3:4">3:4 竖版</SelectItem>
+              <SelectItem value="1:1">1:1 方形</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -21,11 +21,11 @@ export function UpdateNotification({ info }: UpdateNotificationProps) {
         variant="secondary"
         size="sm"
         onClick={handleDownload}
-        aria-label="Update Available"
+        aria-label="有可用更新"
         className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 h-8 shadow-sm hover:shadow-md transition-all duration-200 backdrop-blur-sm font-medium"
       >
         <Download className="w-4 h-4 mr-2" />
-        Update Available
+        有可用更新
       </Button>
     </div>
   )

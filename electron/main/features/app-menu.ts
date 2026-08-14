@@ -18,7 +18,7 @@ export function createEditorMenu() {
       role: 'help',
       submenu: [
         {
-          label: 'Learn More on GitHub',
+          label: '在 GitHub 上了解更多',
           click: async () => {
             await shell.openExternal('https://github.com/tamnguyenvan/screenarc')
           },

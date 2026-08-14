@@ -25,7 +25,7 @@ function ZoomSettings({ region }: { region: ZoomRegion }) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold text-sidebar-foreground mb-3 tracking-tight">Zoom Type</h3>
+        <h3 className="text-sm font-semibold text-sidebar-foreground mb-3 tracking-tight">缩放类型</h3>
         <div className="grid grid-cols-2 gap-2 p-1 bg-muted/50 rounded-lg">
           <Button
             variant={activeTab === 'auto' ? 'secondary' : 'ghost'}
@@ -33,7 +33,7 @@ function ZoomSettings({ region }: { region: ZoomRegion }) {
             className="h-auto py-2.5 flex items-center justify-center gap-2 transition-all duration-200"
           >
             <Pointer className="w-4 h-4" />
-            <span className="font-medium">Auto</span>
+            <span className="font-medium">自动</span>
           </Button>
           <Button
             variant={activeTab === 'fixed' ? 'secondary' : 'ghost'}
@@ -41,7 +41,7 @@ function ZoomSettings({ region }: { region: ZoomRegion }) {
             className="h-auto py-2.5 flex items-center justify-center gap-2 transition-all duration-200"
           >
             <Video className="w-4 h-4" />
-            <span className="font-medium">Fixed</span>
+            <span className="font-medium">固定</span>
           </Button>
         </div>
       </div>
@@ -51,9 +51,9 @@ function ZoomSettings({ region }: { region: ZoomRegion }) {
           <div className="flex items-start gap-3">
             <Pointer className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-foreground mb-1">Auto Tracking</p>
+              <p className="text-sm font-medium text-foreground mb-1">自动跟随</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Zoom will automatically follow the mouse cursor in this area.
+                缩放会在此片段中自动跟随鼠标光标。
               </p>
             </div>
           </div>
@@ -80,7 +80,7 @@ function ZoomSettings({ region }: { region: ZoomRegion }) {
           className="w-full h-10 bg-destructive/10 hover:bg-destructive text-destructive hover:text-destructive-foreground transition-all duration-200 flex items-center gap-2 justify-center font-medium"
         >
           <Trash className="w-4 h-4" />
-          <span>Delete Region</span>
+          <span>删除片段</span>
         </Button>
       </div>
     </div>
@@ -101,9 +101,9 @@ export function RegionSettingsPanel({ region }: RegionSettingsPanelProps) {
             <RegionIcon className={cn('w-5 h-5', regionColor)} />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-sidebar-foreground capitalize">{region.type} Region</h2>
+            <h2 className="text-lg font-semibold text-sidebar-foreground">{region.type === 'zoom' ? '缩放片段' : '裁剪片段'}</h2>
             <p className="text-sm text-muted-foreground">
-              {region.type === 'zoom' ? 'Zoom and pan controls' : 'Cut segment settings'}
+              {region.type === 'zoom' ? '设置缩放和镜头移动' : '设置要删除的片段'}
             </p>
           </div>
         </div>
@@ -120,9 +120,9 @@ export function RegionSettingsPanel({ region }: RegionSettingsPanelProps) {
             <div className="flex items-start gap-3">
               <Scissors className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-foreground mb-1">Cut Segment</p>
+                <p className="text-sm font-medium text-foreground mb-1">裁剪片段</p>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  This portion will be removed from the final video
+                  这一段会从最终视频中移除
                 </p>
               </div>
             </div>

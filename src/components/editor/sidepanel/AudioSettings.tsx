@@ -60,8 +60,8 @@ export function AudioSettings() {
             <Microphone className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-sidebar-foreground">Audio Settings</h2>
-            <p className="text-sm text-muted-foreground">Adjust volume and effects</p>
+            <h2 className="text-lg font-semibold text-sidebar-foreground">音频设置</h2>
+            <p className="text-sm text-muted-foreground">调整音量和效果</p>
           </div>
         </div>
       </div>
@@ -71,14 +71,14 @@ export function AudioSettings() {
         {!hasAudioTrack ? (
           <DisabledPanelPlaceholder
             icon={<MicrophoneOff className="w-8 h-8 text-muted-foreground" />}
-            title="No Audio Detected"
-            message="These settings are unavailable because the current video does not contain an audio track."
+            title="未检测到音频"
+            message="当前视频不含音轨，无法使用这些设置。"
           />
         ) : (
           <div className="p-6 space-y-6">
             <Collapse
-              title="Master Volume"
-              description="Control the overall volume of the video"
+              title="主音量"
+              description="控制视频的整体音量"
               icon={<Volume className="w-4 h-4 text-primary" />}
               defaultOpen={true}
               onReset={handleResetVolume}
@@ -90,7 +90,7 @@ export function AudioSettings() {
                     size="icon"
                     onClick={toggleMute}
                     className="flex-shrink-0 h-10 w-10"
-                    aria-label={isMuted ? 'Unmute' : 'Mute'}
+                    aria-label={isMuted ? '取消静音' : '静音'}
                   >
                     <VolumeIcon className="w-5 h-5" />
                   </Button>
@@ -117,7 +117,7 @@ export function AudioSettings() {
                   )}
                 >
                   <MaxVolume className="w-4 h-4 mr-2" />
-                  Set to Max Volume
+                  设为最大音量
                 </Button>
               </div>
             </Collapse>

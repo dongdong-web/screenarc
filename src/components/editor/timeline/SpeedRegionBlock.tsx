@@ -118,7 +118,7 @@ export const SpeedRegionBlock = memo(
           position={menuPosition}
           className="min-w-[120px]"
         >
-          <ContextMenuLabel>Speed</ContextMenuLabel>
+          <ContextMenuLabel>变速</ContextMenuLabel>
           {SPEED_OPTIONS.map((speed) => (
             <ContextMenuItem key={speed} onClick={() => handleSpeedSelect(speed)}>
               <span className="flex-1">{speed}x</span>
@@ -126,7 +126,7 @@ export const SpeedRegionBlock = memo(
             </ContextMenuItem>
           ))}
           <ContextMenuDivider />
-          <ContextMenuItem onClick={handleApplyToAll}>Apply to all</ContextMenuItem>
+          <ContextMenuItem onClick={handleApplyToAll}>应用到全部</ContextMenuItem>
         </ContextMenu>
       </>
     )

@@ -363,13 +363,13 @@ export function createMouseTracker(): IMouseTracker | null {
   switch (process.platform) {
     case 'linux':
       if (!X11Module) {
-        dialog.showErrorBox('Dependency Missing', 'Could not load the required module for mouse tracking on Linux.')
+        dialog.showErrorBox('缺少依赖', '无法加载 Linux 鼠标跟踪所需的模块。')
         return null
       }
       return new LinuxMouseTracker()
     case 'win32':
       if (!mouseEvents) {
-        dialog.showErrorBox('Dependency Missing', 'Could not load the required module for mouse tracking on Windows.')
+        dialog.showErrorBox('缺少依赖', '无法加载 Windows 鼠标跟踪所需的模块。')
         return null
       }
       return new WindowsMouseTracker()

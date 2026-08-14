@@ -100,8 +100,8 @@ export function PresetModal({ isOpen, onClose }: PresetModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 border-b border-border/50 flex-shrink-0 bg-gradient-to-b from-card/50 to-transparent">
-          <h2 className="text-xl font-bold text-foreground mb-1">Manage Presets</h2>
-          <p className="text-sm text-muted-foreground">Select, create, or delete your frame style presets.</p>
+          <h2 className="text-xl font-bold text-foreground mb-1">管理预设</h2>
+          <p className="text-sm text-muted-foreground">选择、创建或删除画面风格预设。</p>
         </div>
 
         <div className="flex-1 flex flex-row overflow-hidden">
@@ -147,7 +147,7 @@ export function PresetModal({ isOpen, onClose }: PresetModalProps) {
               <Input
                 value={newPresetName}
                 onChange={(e) => setNewPresetName(e.target.value)}
-                placeholder="New preset name..."
+                placeholder="新预设名称…"
                 className="h-10"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && newPresetName.trim()) handleSaveNew()
@@ -159,7 +159,7 @@ export function PresetModal({ isOpen, onClose }: PresetModalProps) {
                 disabled={!newPresetName.trim()}
                 className="w-full h-10 font-medium"
               >
-                <Plus className="w-4 h-4 mr-2" /> Save Current Style
+                <Plus className="w-4 h-4 mr-2" /> 保存当前风格
               </Button>
             </div>
           </div>
@@ -179,7 +179,7 @@ export function PresetModal({ isOpen, onClose }: PresetModalProps) {
                       onClick={() => handleDelete(previewPreset.id)}
                       className="h-9"
                     >
-                      <Trash className="w-4 h-4 mr-2" /> Delete
+                      <Trash className="w-4 h-4 mr-2" /> 删除
                     </Button>
                   )}
                 </div>
@@ -219,7 +219,7 @@ export function PresetModal({ isOpen, onClose }: PresetModalProps) {
               </div>
             ) : (
               <div className="flex-1 flex items-center justify-center">
-                <p className="text-muted-foreground">Select a preset to preview</p>
+                <p className="text-muted-foreground">选择一个预设以预览</p>
               </div>
             )}
           </div>
@@ -227,10 +227,10 @@ export function PresetModal({ isOpen, onClose }: PresetModalProps) {
 
         <div className="p-5 border-t border-border/50 flex justify-end gap-3 flex-shrink-0 bg-gradient-to-t from-card/50 to-transparent">
           <Button variant="secondary" onClick={onClose} className="h-10 px-6">
-            Cancel
+            取消
           </Button>
           <Button onClick={handleSelect} disabled={!previewId} className="h-10 px-6 font-medium">
-            Select Preset
+            选用预设
           </Button>
         </div>
       </div>

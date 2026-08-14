@@ -73,15 +73,15 @@ export function FrameEffectsSettings() {
     <div className="space-y-4">
       {/* Padding Section */}
       <Collapse
-        title="Padding"
-        description="Space around your video content"
+        title="留白"
+        description="视频内容四周的留白"
         icon={<BoxPadding />}
         defaultOpen={true}
         onReset={handleResetPadding}
       >
         <div className="space-y-3">
           <label className="flex items-center justify-between text-sm text-muted-foreground">
-            <span>Padding</span>
+            <span>留白</span>
             <span className="text-xs font-semibold text-primary tabular-nums">{frameStyles.padding}%</span>
           </label>
           <Slider
@@ -96,8 +96,8 @@ export function FrameEffectsSettings() {
 
       {/* Shadow Section */}
       <Collapse
-        title="Shadow"
-        description="Add depth with drop shadows"
+        title="阴影"
+        description="添加投影以增强层次感"
         icon={<Shadow />}
         defaultOpen={true}
         onReset={handleResetShadow}
@@ -105,7 +105,7 @@ export function FrameEffectsSettings() {
         <div className="space-y-4">
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Blur</span>
+              <span className="text-sm text-muted-foreground">模糊</span>
               <span className="text-xs font-semibold text-primary tabular-nums">{frameStyles.shadowBlur}px</span>
             </div>
             <Slider
@@ -120,7 +120,7 @@ export function FrameEffectsSettings() {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Offset X</span>
+                <span className="text-sm text-muted-foreground">水平偏移</span>
                 <span className="text-xs font-semibold text-primary tabular-nums">{frameStyles.shadowOffsetX}px</span>
               </div>
               <Slider
@@ -133,7 +133,7 @@ export function FrameEffectsSettings() {
             </div>
             <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Offset Y</span>
+                <span className="text-sm text-muted-foreground">垂直偏移</span>
                 <span className="text-xs font-semibold text-primary tabular-nums">{frameStyles.shadowOffsetY}px</span>
               </div>
               <Slider
@@ -148,11 +148,11 @@ export function FrameEffectsSettings() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <ColorPicker label="Color" value={shadowHex} onChange={handleShadowColorChange} />
+              <ColorPicker label="颜色" value={shadowHex} onChange={handleShadowColorChange} />
             </div>
             <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Opacity</span>
+              <span className="text-sm text-muted-foreground">不透明度</span>
                 <span className="text-xs font-semibold text-primary tabular-nums">
                   {Math.round(shadowAlpha * 100)}%
                 </span>
@@ -171,8 +171,8 @@ export function FrameEffectsSettings() {
 
       {/* Border Section */}
       <Collapse
-        title="Border"
-        description="Frame your video with a border"
+        title="边框"
+        description="为视频添加边框"
         icon={<BorderAll />}
         defaultOpen={false}
         onReset={handleResetBorder}
@@ -180,7 +180,7 @@ export function FrameEffectsSettings() {
         <div className="space-y-4">
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Radius</span>
+              <span className="text-sm text-muted-foreground">圆角</span>
               <span className="text-xs font-semibold text-primary tabular-nums">{frameStyles.borderRadius}px</span>
             </div>
 
@@ -194,7 +194,7 @@ export function FrameEffectsSettings() {
           </div>
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Thickness</span>
+              <span className="text-sm text-muted-foreground">粗细</span>
               <span className="text-xs font-semibold text-primary tabular-nums">{frameStyles.borderWidth}px</span>
             </div>
             <Slider
@@ -206,7 +206,7 @@ export function FrameEffectsSettings() {
             />
           </div>
           <div>
-            <ColorPicker label="Color" value={borderHex} onChange={handleBorderColorChange} />
+            <ColorPicker label="颜色" value={borderHex} onChange={handleBorderColorChange} />
           </div>
         </div>
       </Collapse>

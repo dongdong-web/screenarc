@@ -30,7 +30,7 @@ export function ExportButton({ onClick, isExporting, disabled }: ExportButtonPro
     >
       <span className="relative z-10 flex items-center">
         {isExporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Upload className="w-4 h-4 mr-2" />}
-        {isExporting ? 'Exporting...' : 'Export'}
+        {isExporting ? '正在导出…' : '导出'}
       </span>
     </Button>
   )

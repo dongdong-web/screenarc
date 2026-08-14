@@ -135,8 +135,8 @@ export function CameraSettings() {
             <DeviceComputerCamera className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-sidebar-foreground">Camera Settings</h2>
-            <p className="text-sm text-muted-foreground">Adjust your webcam overlay</p>
+            <h2 className="text-lg font-semibold text-sidebar-foreground">摄像头设置</h2>
+            <p className="text-sm text-muted-foreground">调整摄像头画中画</p>
           </div>
         </div>
       </div>
@@ -146,15 +146,15 @@ export function CameraSettings() {
         {!webcamVideoUrl ? (
           <DisabledPanelPlaceholder
             icon={<DeviceComputerCameraOff className="w-8 h-8 text-muted-foreground" />}
-            title="No Webcam Recorded"
-            message="These settings are unavailable because a webcam was not included in this recording."
+            title="未录制摄像头"
+            message="本次录制未包含摄像头，因此无法使用这些设置。"
           />
         ) : (
           <div className="p-6 space-y-6">
-            <ControlGroup label="Visibility" icon={<Eye className="w-4 h-4 text-primary" />}>
+            <ControlGroup label="显示" icon={<Eye className="w-4 h-4 text-primary" />}>
               <div className="flex items-center justify-between p-3 rounded-lg bg-sidebar-accent/30 border border-sidebar-border">
                 <span className="text-sm font-medium text-sidebar-foreground">
-                  {isWebcamVisible ? 'Visible' : 'Hidden'}
+                  {isWebcamVisible ? '显示' : '隐藏'}
                 </span>
                 <Switch
                   checked={isWebcamVisible}
@@ -165,8 +165,8 @@ export function CameraSettings() {
             </ControlGroup>
 
             <Collapse
-              title="Style"
-              description="Change shape and orientation"
+              title="样式"
+              description="调整形状和方向"
               icon={<Photo />}
               defaultOpen={false}
               onReset={handleResetStyle}
@@ -174,7 +174,7 @@ export function CameraSettings() {
               <div className="space-y-6">
                 {/* Shape Selector */}
                 <div className="space-y-3">
-                  <label className="text-sm font-medium text-sidebar-foreground">Shape</label>
+                  <label className="text-sm font-medium text-sidebar-foreground">形状</label>
                   <div className="grid grid-cols-3 gap-2 p-1 bg-muted/50 rounded-lg">
                     <Button
                       variant={webcamStyles.shape === 'rectangle' ? 'secondary' : 'ghost'}
@@ -208,7 +208,7 @@ export function CameraSettings() {
                         {' '}
                         <BorderRadius className="w-4 h-4" />{' '}
                       </div>
-                      <span className={isCircle ? 'text-muted-foreground' : ''}>Corner Radius</span>
+                      <span className={isCircle ? 'text-muted-foreground' : ''}>圆角</span>
                     </div>
                     {!isCircle && (
                       <span className="text-xs font-semibold text-primary tabular-nums">
@@ -233,7 +233,7 @@ export function CameraSettings() {
                       <div className="w-5 h-5 flex items-center justify-center text-primary">
                         <SquareToggle className="w-4 h-4" />
                       </div>
-                      <span>Flip Horizontal</span>
+                      <span>水平翻转</span>
                     </div>
                     <Switch
                       checked={webcamStyles.isFlipped}
@@ -245,8 +245,8 @@ export function CameraSettings() {
             </Collapse>
 
             <Collapse
-              title="Placement"
-              description="Adjust size and corner position"
+              title="位置与大小"
+              description="调整大小和角落位置"
               icon={<TransformPointBottomLeftIcon />}
               defaultOpen={false}
               onReset={handleResetPlacement}
@@ -254,7 +254,7 @@ export function CameraSettings() {
               <div className="space-y-6">
                 <div className="space-y-3">
                   <label className="flex items-center justify-between text-sm font-medium text-sidebar-foreground">
-                    <span>Size</span>
+                    <span>大小</span>
                     <span className="text-xs font-semibold text-primary tabular-nums">{webcamStyles.size}%</span>
                   </label>
                   <Slider
@@ -271,7 +271,7 @@ export function CameraSettings() {
                       <div className="w-5 h-5 flex items-center justify-center text-primary">
                         <ZoomIn className="w-4 h-4" />
                       </div>
-                      <span>Scale on Zoom</span>
+                      <span>缩放时同步放大</span>
                     </div>
                     <Switch
                       checked={webcamStyles.scaleOnZoom}
@@ -286,7 +286,7 @@ export function CameraSettings() {
                       <div className="w-5 h-5 flex items-center justify-center text-primary">
                         <ArrowsUpRight className="w-4 h-4" />
                       </div>
-                      <span>Smart Position</span>
+                      <span>智能位置</span>
                     </div>
                     <Switch
                       checked={webcamStyles.smartPosition}
@@ -296,7 +296,7 @@ export function CameraSettings() {
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-sm font-medium text-sidebar-foreground">Position</label>
+                  <label className="text-sm font-medium text-sidebar-foreground">位置</label>
                   <div className="relative aspect-video w-full bg-muted/50 rounded-lg p-2 border border-border">
                     {positions.map(({ pos, classes }) => {
                       const isActive = webcamPosition.pos === pos
@@ -308,7 +308,7 @@ export function CameraSettings() {
                             'absolute w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring ring-offset-background group',
                             classes,
                           )}
-                          aria-label={`Position ${pos.replace('-', ' ')}`}
+                          aria-label={`位置 ${pos.replace('-', ' ')}`}
                         >
                           <div
                             className={cn(
@@ -327,8 +327,8 @@ export function CameraSettings() {
             </Collapse>
 
             <Collapse
-              title="Effects"
-              description="Add a drop shadow for depth"
+              title="效果"
+              description="添加投影以增强层次感"
               icon={<Wand />}
               defaultOpen={false}
               onReset={handleResetEffects}
@@ -336,7 +336,7 @@ export function CameraSettings() {
               <div className="space-y-4">
                 <div className="space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Blur</span>
+                    <span className="text-sm text-muted-foreground">模糊</span>
                     <span className="text-xs font-semibold text-primary tabular-nums">{webcamStyles.shadowBlur}px</span>
                   </div>
                   <Slider
@@ -350,7 +350,7 @@ export function CameraSettings() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Offset X</span>
+                      <span className="text-sm text-muted-foreground">水平偏移</span>
                       <span className="text-xs font-semibold text-primary tabular-nums">
                         {webcamStyles.shadowOffsetX}px
                       </span>
@@ -365,7 +365,7 @@ export function CameraSettings() {
                   </div>
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Offset Y</span>
+                      <span className="text-sm text-muted-foreground">垂直偏移</span>
                       <span className="text-xs font-semibold text-primary tabular-nums">
                         {webcamStyles.shadowOffsetY}px
                       </span>
@@ -381,11 +381,11 @@ export function CameraSettings() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <ColorPicker label="Color" value={shadowHex} onChange={handleShadowColorChange} />
+                    <ColorPicker label="颜色" value={shadowHex} onChange={handleShadowColorChange} />
                   </div>
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Opacity</span>
+                      <span className="text-sm text-muted-foreground">不透明度</span>
                       <span className="text-xs font-semibold text-primary tabular-nums">
                         {Math.round(shadowAlpha * 100)}%
                       </span>

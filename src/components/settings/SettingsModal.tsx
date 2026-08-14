@@ -13,9 +13,9 @@ interface SettingsModalProps {
 type SettingsTab = 'general' | 'shortcuts' | 'about'
 
 const TABS: { id: SettingsTab; label: string; icon: React.ReactNode }[] = [
-  { id: 'general', label: 'General', icon: <Settings className="w-5 h-5" /> },
-  { id: 'shortcuts', label: 'Shortcuts', icon: <Keyboard className="w-5 h-5" /> },
-  { id: 'about', label: 'About', icon: <InfoCircle className="w-5 h-5" /> },
+  { id: 'general', label: '通用', icon: <Settings className="w-5 h-5" /> },
+  { id: 'shortcuts', label: '快捷键', icon: <Keyboard className="w-5 h-5" /> },
+  { id: 'about', label: '关于', icon: <InfoCircle className="w-5 h-5" /> },
 ]
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
@@ -44,7 +44,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       >
         {/* Sidebar */}
         <div className="w-56 flex-shrink-0 bg-muted/40 p-4 border-r border-border flex flex-col">
-          <h2 className="text-lg font-bold text-foreground px-2 mb-4">Settings</h2>
+          <h2 className="text-lg font-bold text-foreground px-2 mb-4">设置</h2>
           <div className="space-y-1">
             {TABS.map((tab) => (
               <button

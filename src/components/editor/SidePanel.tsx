@@ -61,8 +61,8 @@ function FrameSettingsPanel() {
             <LayoutBoard className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-sidebar-foreground">General Settings</h2>
-            <p className="text-sm text-muted-foreground">Customize your video&apos;s appearance</p>
+            <h2 className="text-lg font-semibold text-sidebar-foreground">通用设置</h2>
+            <p className="text-sm text-muted-foreground">调整视频的整体外观</p>
           </div>
         </div>
       </div>
@@ -154,33 +154,33 @@ export function SidePanel() {
       <div className="w-[64px] flex-shrink-0 p-3 border-l border-sidebar-border bg-sidebar/80">
         <div className="flex flex-col items-center space-y-2">
           <TabButton
-            label="General"
+            label="通用"
             icon={<LayoutBoard className="w-5 h-5" />}
             isActive={activeSidePanelTab === 'general'}
             onClick={() => setActiveSidePanelTab('general')}
           />
           <TabButton
-            label="Camera"
+            label="摄像头"
             icon={<DeviceComputerCamera className="w-5 h-5" />}
             isActive={activeSidePanelTab === 'camera'}
             onClick={() => setActiveSidePanelTab('camera')}
             disabled={!webcamVideoUrl}
           />
           <TabButton
-            label="Audio"
+            label="音频"
             icon={<Microphone className="w-5 h-5" />}
             isActive={activeSidePanelTab === 'audio'}
             onClick={() => setActiveSidePanelTab('audio')}
             disabled={!hasAudioTrack}
           />
           <TabButton
-            label="Animation"
+            label="动画"
             icon={<Route className="w-5 h-5" />}
             isActive={activeSidePanelTab === 'animation'}
             onClick={() => setActiveSidePanelTab('animation')}
           />
           <TabButton
-            label="Cursor"
+            label="光标"
             icon={<Pointer className="w-5 h-5" />}
             isActive={activeSidePanelTab === 'cursor'}
             onClick={() => setActiveSidePanelTab('cursor')}

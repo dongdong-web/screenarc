@@ -98,7 +98,7 @@ export const ColorPicker = ({ value, onChange, label, className, disabled = fals
             onChange={handleSwatchChange}
             disabled={disabled}
             className={cn('absolute inset-0 w-full h-full opacity-0', !disabled && 'cursor-pointer')}
-            aria-label="Color Picker Swatch"
+            aria-label="颜色选择器"
             aria-disabled={disabled}
           />
           {/* The visible color block inside the swatch border */}
@@ -118,7 +118,7 @@ export const ColorPicker = ({ value, onChange, label, className, disabled = fals
           disabled={disabled}
           className={inputClasses}
           placeholder="#RRGGBB"
-          aria-label="Color Hex Value"
+          aria-label="颜色十六进制值"
           aria-disabled={disabled}
         />
       </div>

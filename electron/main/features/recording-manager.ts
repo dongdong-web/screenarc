@@ -254,20 +254,20 @@ async function validateRecordingFiles(session: RecordingSession): Promise<boolea
     try {
       const stats = await fsPromises.stat(filePath)
       if (stats.size === 0) {
-        const errorMessage = `The recording produced an empty video file (${path.basename(filePath)}). This could be due to incorrect permissions, lack of disk space, or a hardware issue.`
+        const errorMessage = `录制生成了空视频文件（${path.basename(filePath)}）。这可能是权限不足、磁盘空间不足或硬件问题导致的。`
         log.error(`[Validation] ${errorMessage}`)
-        dialog.showErrorBox('Recording Validation Failed', errorMessage)
+        dialog.showErrorBox('录制文件校验失败', errorMessage)
         return false
       }
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-        const errorMessage = `The recording process failed to create the video file: ${path.basename(filePath)}.`
+        const errorMessage = `录制过程未能创建视频文件：${path.basename(filePath)}。`
         log.error(`[Validation] ${errorMessage}`)
-        dialog.showErrorBox('Recording Validation Failed', errorMessage)
+        dialog.showErrorBox('录制文件校验失败', errorMessage)
       } else {
-        const errorMessage = `Could not access the recorded file (${path.basename(filePath)}). Error: ${(error as Error).message}`
+        const errorMessage = `无法访问录制文件（${path.basename(filePath)}）。错误：${(error as Error).message}`
         log.error(`[Validation] ${errorMessage}`, error)
-        dialog.showErrorBox('File Error', errorMessage)
+        dialog.showErrorBox('文件错误', errorMessage)
       }
       return false
     }
@@ -432,8 +432,8 @@ async function startActualRecording(
       if (fatalErrorKeywords.some((keyword) => message.toLowerCase().includes(keyword.toLowerCase()))) {
         log.error(`[FFMPEG] Fatal error detected: ${message}`)
         dialog.showErrorBox(
-          'Recording Failed',
-          `A critical error occurred while starting the recording process:\n\n${message}\n\nPlease check your device permissions and configurations.`,
+          '录制失败',
+          `启动录制时发生严重错误：\n\n${message}\n\n请检查设备权限和配置。`,
         )
         setTimeout(() => cleanupAndDiscard(), 100)
       }
@@ -502,19 +502,19 @@ function createTray() {
   appState.tray = new Tray(icon)
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Stop Recording',
+      label: '停止录制',
       click: async () => {
         await stopRecording()
       },
     },
     {
-      label: 'Cancel Recording',
+      label: '取消录制',
       click: async () => {
         await cancelRecording()
       },
     },
   ])
-  appState.tray.setToolTip('ScreenArc is recording...')
+  appState.tray.setToolTip('ScreenArc 正在录制…')
   appState.tray.setContextMenu(contextMenu)
 }
 
@@ -547,11 +547,11 @@ export async function startRecording(options: any) {
     if (!screenGranted) {
       const { response } = await dialog.showMessageBox({
         type: 'warning',
-        title: 'Screen Recording Permission Required',
-        message: 'ScreenArc needs Screen Recording permission to record your screen.',
+        title: '需要屏幕录制权限',
+        message: 'ScreenArc 需要屏幕录制权限才能录制屏幕。',
         detail:
           'Go to System Settings → Privacy & Security → Screen Recording and enable the toggle next to "Electron" (the dev build). Then restart the app and try again.',
-        buttons: ['Open System Settings', 'Cancel'],
+        buttons: ['打开系统设置', '取消'],
         defaultId: 0,
       })
       if (response === 0) {
@@ -568,8 +568,8 @@ export async function startRecording(options: any) {
       }
       if (micAccess !== 'granted') {
         dialog.showErrorBox(
-          'Microphone Permission Required',
-          'Microphone permissions required. Please go to System Preferences > Security & Privacy > Privacy > Microphone and enable this application.',
+          '需要麦克风权限',
+          '需要麦克风权限。请前往系统设置的“隐私与安全性 > 麦克风”，并允许此应用访问。',
         )
         return { canceled: true }
       }
@@ -1255,9 +1255,9 @@ export async function loadVideoFromFile() {
   if (!recorderWindow) return { canceled: true }
 
   const { canceled, filePaths } = await dialog.showOpenDialog(recorderWindow, {
-    title: 'Select a video file to edit',
+    title: '选择要编辑的视频文件',
     properties: ['openFile'],
-    filters: [{ name: 'Videos', extensions: ['mp4', 'mov', 'webm', 'mkv'] }],
+    filters: [{ name: '视频', extensions: ['mp4', 'mov', 'webm', 'mkv'] }],
   })
 
   if (canceled || filePaths.length === 0) return { canceled: true }
@@ -1308,7 +1308,7 @@ export async function loadVideoFromFile() {
     return { canceled: false, filePath: screenVideoPath }
   } catch (error) {
     log.error('[RecordingManager] Error loading video from file:', error)
-    dialog.showErrorBox('Error Loading Video', `An error occurred while loading the video: ${(error as Error).message}`)
+    dialog.showErrorBox('加载视频失败', `加载视频时发生错误：${(error as Error).message}`)
     appState.savingWin?.close()
     if (recorderWindow && !recorderWindow.isDestroyed()) {
       recorderWindow.show()

@@ -79,12 +79,12 @@ const SettingsView = ({
 
   const handleBrowse = async () => {
     const result = await window.electronAPI.showSaveDialog({
-      title: 'Save Video',
+      title: '保存视频',
       defaultPath: outputPath,
       filters:
         settings.format === 'mp4'
-          ? [{ name: 'MP4 Video', extensions: ['mp4'] }]
-          : [{ name: 'GIF Animation', extensions: ['gif'] }],
+          ? [{ name: 'MP4 视频', extensions: ['mp4'] }]
+          : [{ name: 'GIF 动图', extensions: ['gif'] }],
     })
 
     if (!result.canceled && result.filePath) {
@@ -116,8 +116,8 @@ const SettingsView = ({
             <Upload className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-foreground">Export Settings</h2>
-            <p className="text-sm text-muted-foreground">Configure your export options</p>
+            <h2 className="text-lg font-semibold text-foreground">导出设置</h2>
+            <p className="text-sm text-muted-foreground">设置视频导出参数</p>
           </div>
         </div>
       </div>
@@ -125,38 +125,38 @@ const SettingsView = ({
       {/* Body */}
       <div className="flex-1 p-6 overflow-y-auto">
         <div className="space-y-5">
-          <SettingRow label="Format">
+          <SettingRow label="格式">
             <Select value={settings.format} onValueChange={(value) => handleValueChange('format', value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="mp4">MP4 (Video)</SelectItem>
-                <SelectItem value="gif">GIF (Animation)</SelectItem>
+                <SelectItem value="mp4">MP4（视频）</SelectItem>
+                <SelectItem value="gif">GIF（动图）</SelectItem>
               </SelectContent>
             </Select>
           </SettingRow>
-          <SettingRow label="Resolution">
+          <SettingRow label="分辨率">
             <Select value={settings.resolution} onValueChange={(value) => handleValueChange('resolution', value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="720p">HD (720p)</SelectItem>
-                <SelectItem value="1080p">Full HD (1080p)</SelectItem>
-                <SelectItem value="2k">2K (1440p)</SelectItem>
+                <SelectItem value="720p">高清（720p）</SelectItem>
+                <SelectItem value="1080p">全高清（1080p）</SelectItem>
+                <SelectItem value="2k">2K（1440p）</SelectItem>
               </SelectContent>
             </Select>
           </SettingRow>
-          <SettingRow label="Quality">
+          <SettingRow label="质量">
             <Select value={settings.quality} onValueChange={(value) => handleValueChange('quality', value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
+                <SelectItem value="low">低</SelectItem>
+                <SelectItem value="medium">中</SelectItem>
+                <SelectItem value="high">高</SelectItem>
               </SelectContent>
             </Select>
           </SettingRow>
@@ -170,23 +170,23 @@ const SettingsView = ({
               </SelectContent>
             </Select>
           </SettingRow>
-          <SettingRow label="Output File">
+          <SettingRow label="输出文件">
             <div className="w-full flex items-center gap-2">
               <div className="flex-1 min-w-0">
                 <Input
                   value={outputPath}
                   onChange={(e) => setOutputPath(e.target.value)}
-                  placeholder="Loading default path..."
+                  placeholder="正在加载默认路径…"
                   className="w-full h-9 bg-background text-foreground"
                 />
               </div>
               <Button variant="secondary" size="sm" onClick={handleBrowse} className="h-9 whitespace-nowrap">
-                Browse
+                浏览
               </Button>
             </div>
           </SettingRow>
           <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border mt-4">
-            <span className="text-sm font-medium text-foreground">Estimated Duration</span>
+            <span className="text-sm font-medium text-foreground">预计时长</span>
             <span className="text-sm font-bold text-primary tabular-nums">{formatTime(estimatedDuration, true)}</span>
           </div>
         </div>
@@ -195,10 +195,10 @@ const SettingsView = ({
       {/* Footer */}
       <div className="p-4 border-t border-border flex justify-end gap-3 flex-shrink-0">
         <Button variant="secondary" onClick={onClose}>
-          Cancel
+          取消
         </Button>
         <Button onClick={() => onStartExport(settings, outputPath)} disabled={!outputPath}>
-          Start Export
+          开始导出
         </Button>
       </div>
     </>
@@ -210,8 +210,8 @@ const ProgressView = ({ progress, onCancel }: { progress: number; onCancel: () =
     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-5">
       <Loader2 className="w-8 h-8 text-primary animate-spin" />
     </div>
-    <h2 className="text-lg font-semibold text-foreground mb-2">Exporting...</h2>
-    <p className="text-sm text-muted-foreground mb-8">Please wait while we process your video.</p>
+    <h2 className="text-lg font-semibold text-foreground mb-2">正在导出…</h2>
+    <p className="text-sm text-muted-foreground mb-8">正在处理视频，请稍候。</p>
     <div className="relative w-full h-2.5 bg-muted rounded-full overflow-hidden">
       <div
         className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-300"
@@ -220,7 +220,7 @@ const ProgressView = ({ progress, onCancel }: { progress: number; onCancel: () =
     </div>
     <p className="text-sm font-semibold text-primary mt-4 tabular-nums">{progress < 0.1 ? '< 1' : Math.round(progress)}%</p>
     <Button variant="secondary" onClick={onCancel} className="mt-8 w-full">
-      Cancel
+      取消
     </Button>
   </div>
 )
@@ -235,15 +235,15 @@ const ResultView = ({ result, onClose }: { result: NonNullable<ExportModalProps[
   }
 
   const getTitle = () => {
-    if (isCancelled) return 'Export Cancelled'
-    if (result.success) return 'Export Successful'
-    return 'Export Failed'
+    if (isCancelled) return '已取消导出'
+    if (result.success) return '导出成功'
+    return '导出失败'
   }
 
   const getMessage = () => {
-    if (isCancelled) return 'The export process was stopped.'
-    if (result.success) return 'Your video has been saved to the selected location.'
-    return result.error || 'An unknown error occurred.'
+    if (isCancelled) return '导出已停止。'
+    if (result.success) return '视频已保存到指定位置。'
+    return result.error || '发生未知错误。'
   }
 
   const getIcon = () => {
@@ -273,16 +273,16 @@ const ResultView = ({ result, onClose }: { result: NonNullable<ExportModalProps[
         {result.success ? (
           <>
             <Button onClick={onClose} variant="secondary" className="flex-1">
-              Close
+              关闭
             </Button>
             <Button onClick={handleOpenFolder} className="flex-1">
               <Folder className="w-4 h-4 mr-2" />
-              Open Folder
+              打开文件夹
             </Button>
           </>
         ) : (
           <Button onClick={onClose} className="flex-1">
-            Close
+            关闭
           </Button>
         )}
       </div>
