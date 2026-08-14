@@ -18,10 +18,16 @@ import { SystemAudioWriter } from './system-audio-writer'
 import { ScreenVideoWriter } from './screen-video-writer'
 import { buildMuxArgs, buildMacMuxArgs } from './build-mux-args'
 import { buildFfmpegArgs } from './build-recording-args'
+import {
+  SOFTWARE_H264_ENCODER,
+  selectWindowsRecordingEncoder,
+  type RecordingVideoEncoder,
+} from './recording-video-encoder'
 
 const FFMPEG_PATH = getFFmpegPath()
 const SYSTEM_AUDIO_STOP_TIMEOUT_MS = 5000
 const SCREEN_CAPTURE_STOP_TIMEOUT_MS = 5000
+const HARDWARE_ENCODER_PROBE_TIMEOUT_MS = 8000
 
 // Module-scoped writers used by the renderer-streamed capture paths. They
 // live outside appState because they're helpers, not session data.
@@ -39,6 +45,73 @@ let pendingScreenCaptureStop:
       resolve: () => void
     }
   | null = null
+let windowsRecordingEncoderPromise: Promise<RecordingVideoEncoder> | null = null
+
+function probeHardwareRecordingEncoder(
+  candidate: RecordingVideoEncoder,
+  recordingGeometry: RecordingGeometry,
+): Promise<boolean> {
+  const width = Math.max(2, Math.floor(recordingGeometry.width / 2) * 2)
+  const height = Math.max(2, Math.floor(recordingGeometry.height / 2) * 2)
+  const args = [
+    '-hide_banner',
+    '-loglevel',
+    'error',
+    '-f',
+    'lavfi',
+    '-i',
+    `color=c=black:s=${width}x${height}:r=30`,
+    '-frames:v',
+    '1',
+    ...candidate.ffmpegArgs,
+    '-f',
+    'null',
+    '-',
+  ]
+
+  return new Promise<boolean>((resolve) => {
+    let settled = false
+    const finish = (usable: boolean) => {
+      if (settled) return
+      settled = true
+      clearTimeout(timeout)
+      resolve(usable)
+    }
+    const process = spawn(FFMPEG_PATH, args)
+    const timeout = setTimeout(() => {
+      log.warn(`[RecordingManager] ${candidate.label} probe timed out; trying the next encoder.`)
+      process.kill('SIGKILL')
+      finish(false)
+    }, HARDWARE_ENCODER_PROBE_TIMEOUT_MS)
+
+    process.on('error', (error) => {
+      log.warn(`[RecordingManager] ${candidate.label} probe could not start:`, error)
+      finish(false)
+    })
+    process.on('close', (code) => {
+      if (code === 0) {
+        log.info(`[RecordingManager] ${candidate.label} passed the hardware encoder probe.`)
+        finish(true)
+      } else {
+        log.info(`[RecordingManager] ${candidate.label} is unavailable on this machine (exit ${code}).`)
+        finish(false)
+      }
+    })
+  })
+}
+
+function getWindowsRecordingEncoder(recordingGeometry: RecordingGeometry): Promise<RecordingVideoEncoder> {
+  if (!windowsRecordingEncoderPromise) {
+    windowsRecordingEncoderPromise = selectWindowsRecordingEncoder((candidate) =>
+      probeHardwareRecordingEncoder(candidate, recordingGeometry),
+    ).then((encoder) => {
+      log.info(`[RecordingManager] Selected ${encoder.label} for Windows screen recording.`)
+      return encoder
+    })
+  }
+
+  return windowsRecordingEncoderPromise
+}
 
 export function getSystemAudioWriter(): SystemAudioWriter {
   return systemAudioWriter
@@ -325,9 +398,21 @@ async function startActualRecording(
   // webcam, the renderer's MediaRecorder writes the only output we need.
   const needsFfmpeg = !useRendererScreenCapture || hasMic || hasWebcam
   if (needsFfmpeg) {
+    const screenVideoEncoder =
+      process.platform === 'win32'
+        ? await getWindowsRecordingEncoder(recordingGeometry)
+        : SOFTWARE_H264_ENCODER
     const finalArgs = useRendererScreenCapture
       ? buildMacFfmpegArgs(inputArgs, hasMic, hasWebcam, micAudioPath, webcamVideoPath)
-      : buildFfmpegArgs(inputArgs, hasWebcam, hasMic, screenVideoPath, webcamVideoPath)
+      : buildFfmpegArgs(
+          inputArgs,
+          hasWebcam,
+          hasMic,
+          screenVideoPath,
+          webcamVideoPath,
+          screenVideoEncoder.ffmpegArgs,
+        )
+    log.info(`[RecordingManager] Recording video encoder: ${screenVideoEncoder.label}.`)
     log.info(`[FFMPEG] Starting FFmpeg with args: ${finalArgs.join(' ')}`)
     appState.ffmpegProcess = spawn(FFMPEG_PATH, finalArgs)
 

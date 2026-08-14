@@ -96,6 +96,13 @@ describe('ScreenVideoWriter', () => {
     expect(afterAbort).toBe(2)
   })
 
+  test('abort() waits for the stream open attempt before resolving', async () => {
+    const writer = new ScreenVideoWriter()
+    writer.start(filePath())
+
+    await expect(writer.abort()).resolves.toBeUndefined()
+  })
+
   test('start() can begin a fresh session after finalize()', async () => {
     const writer = new ScreenVideoWriter()
     const firstPath = path.join(scratchDir, 'a.webm')

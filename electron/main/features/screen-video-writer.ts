@@ -122,7 +122,22 @@ export class ScreenVideoWriter {
 
     this.ended = true
     try {
+      // Wait until the write stream has opened before destroying it. On
+      // Windows an immediate destroy can leave the asynchronous open() call
+      // racing with temporary-directory cleanup, producing an unhandled
+      // ENOENT after callers already awaited abort().
+      if (!stream.destroyed && !stream.writableEnded) {
+        await new Promise<void>((resolve) => {
+          if (stream.pending) {
+            stream.once('open', () => resolve())
+            stream.once('error', () => resolve())
+          } else {
+            resolve()
+          }
+        })
+      }
       stream.destroy()
+      await finished(stream).catch(() => {})
       await this.queue.catch(() => {})
     } finally {
       this.reset()

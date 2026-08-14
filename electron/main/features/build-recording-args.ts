@@ -7,6 +7,7 @@ export function buildFfmpegArgs(
   hasMic: boolean,
   screenOut: string,
   webcamOut?: string,
+  screenVideoEncoderArgs: readonly string[] = ['-c:v', 'libx264', '-preset', 'ultrafast', '-pix_fmt', 'yuv420p'],
 ): string[] {
   // Recording output paths can survive a failed attempt. FFmpeg is spawned
   // without an interactive terminal, so overwrite them instead of waiting for
@@ -19,12 +20,7 @@ export function buildFfmpegArgs(
   finalArgs.push(
     '-map',
     `${screenIndex}:v`,
-    '-c:v',
-    'libx264',
-    '-preset',
-    'ultrafast',
-    '-pix_fmt',
-    'yuv420p',
+    ...screenVideoEncoderArgs,
     screenOut,
   )
 
