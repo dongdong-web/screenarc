@@ -2,15 +2,14 @@ import type {
   ProjectState,
   ProjectActions,
   Slice,
-  RecordingGeometry,
-  VideoDimensions,
   CursorTheme,
   CursorImageBitmap,
 } from '../../types'
-import type { MetaDataItem, ZoomRegion, CursorFrame } from '../../types'
+import type { MetaDataItem, CursorFrame } from '../../types'
 import { ZOOM } from '../../lib/constants'
 import { initialFrameState, recalculateCanvasDimensions } from './frameSlice'
 import { prepareCursorBitmaps } from '../../lib/utils'
+import { generateAutoZoomRegions } from '../../lib/auto-zoom'
 
 export const initialProjectState: ProjectState = {
   videoPath: null,
@@ -30,66 +29,17 @@ export const initialProjectState: ProjectState = {
   hasAudioTrack: false,
 }
 
-/**
- * Generates automatic zoom regions based on click events from metadata.
- * @param metadata - The array of mouse events.
- * @param videoDimensions - The dimensions of the video.
- * @returns A record of new ZoomRegion objects.
- */
-function generateAutoZoomRegions(
-  metadata: MetaDataItem[],
-  recordingGeometry: RecordingGeometry,
-  videoDimensions: VideoDimensions,
-): Record<string, ZoomRegion> {
-  const clicks = metadata.filter((item) => item.type === 'click' && item.pressed)
-  if (clicks.length === 0) return {}
-
-  const mergedClickGroups: MetaDataItem[][] = []
-  if (clicks.length > 0) {
-    let currentGroup = [clicks[0]]
-    for (let i = 1; i < clicks.length; i++) {
-      if (clicks[i].timestamp - currentGroup[currentGroup.length - 1].timestamp < ZOOM.AUTO_ZOOM_MIN_DURATION) {
-        currentGroup.push(clicks[i])
-      } else {
-        mergedClickGroups.push(currentGroup)
-        currentGroup = [clicks[i]]
-      }
-    }
-    mergedClickGroups.push(currentGroup)
-  }
-
-  const geometry = recordingGeometry || videoDimensions
-
-  return mergedClickGroups.reduce(
-    (acc, group, index) => {
-      const firstClick = group[0]
-      const lastClick = group[group.length - 1]
-
-      const startTime = Math.max(0, firstClick.timestamp - ZOOM.AUTO_ZOOM_PRE_CLICK_OFFSET)
-      const endTime = lastClick.timestamp + ZOOM.AUTO_ZOOM_POST_CLICK_PADDING
-      let duration = endTime - startTime
-      if (duration < ZOOM.AUTO_ZOOM_MIN_DURATION) {
-        duration = ZOOM.AUTO_ZOOM_MIN_DURATION
-      }
-
-      const id = `auto-zoom-${Date.now()}-${index}`
-      acc[id] = {
-        id,
-        type: 'zoom',
-        startTime,
-        duration,
-        zoomLevel: ZOOM.DEFAULT_LEVEL,
-        easing: ZOOM.DEFAULT_EASING,
-        transitionDuration: ZOOM.SPEED_OPTIONS[ZOOM.DEFAULT_SPEED as keyof typeof ZOOM.SPEED_OPTIONS],
-        targetX: firstClick.x / geometry.width - 0.5,
-        targetY: firstClick.y / geometry.height - 0.5,
-        mode: 'auto',
-        zIndex: 0,
-      }
-      return acc
-    },
-    {} as Record<string, ZoomRegion>,
-  )
+const autoZoomOptions = {
+  preClickOffset: ZOOM.AUTO_ZOOM_PRE_CLICK_OFFSET,
+  postClickPadding: ZOOM.AUTO_ZOOM_POST_CLICK_PADDING,
+  minDuration: ZOOM.AUTO_ZOOM_MIN_DURATION,
+  interactionWindow: ZOOM.AUTO_ZOOM_INTERACTION_WINDOW,
+  spatialThreshold: ZOOM.AUTO_ZOOM_SPATIAL_THRESHOLD,
+  minGap: ZOOM.AUTO_ZOOM_MIN_GAP,
+  maxRegions: ZOOM.AUTO_ZOOM_MAX_REGIONS,
+  zoomLevel: ZOOM.DEFAULT_LEVEL,
+  easing: ZOOM.DEFAULT_EASING,
+  transitionDuration: ZOOM.SPEED_OPTIONS[ZOOM.DEFAULT_SPEED as keyof typeof ZOOM.SPEED_OPTIONS],
 }
 
 async function prepareWindowsCursorBitmaps(theme: CursorTheme, scale: number): Promise<Map<string, CursorImageBitmap>> {
@@ -205,7 +155,12 @@ export const createProjectSlice: Slice<ProjectState, ProjectActions> = (set, get
         timestamp: item.timestamp / 1000,
       }))
 
-      const newZoomRegions = generateAutoZoomRegions(processedMetadata, parsedData.geometry, get().videoDimensions)
+      const newZoomRegions = generateAutoZoomRegions(
+        processedMetadata,
+        parsedData.geometry,
+        get().videoDimensions,
+        autoZoomOptions,
+      )
 
       const platform = parsedData.platform || (await window.electronAPI.getPlatform())
       set((state) => {

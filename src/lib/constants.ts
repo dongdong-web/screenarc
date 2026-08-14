@@ -52,9 +52,13 @@ export const ZOOM = {
   DEFAULT_EASING: 'Balanced',
 
   // --- Auto-Zoom Generation ---
-  AUTO_ZOOM_PRE_CLICK_OFFSET: 1.0, // Time to start zoom before the first click
-  AUTO_ZOOM_POST_CLICK_PADDING: 0.9, // Time to hold zoom after the last click
-  AUTO_ZOOM_MIN_DURATION: 3.0, // Minimum duration for an auto-generated zoom region
+  AUTO_ZOOM_PRE_CLICK_OFFSET: 0.4, // Time to begin zooming before the interaction
+  AUTO_ZOOM_POST_CLICK_PADDING: 0.6, // Time to hold after the final click
+  AUTO_ZOOM_MIN_DURATION: 2.5, // Leaves room for a gentle in/hold/out transition
+  AUTO_ZOOM_INTERACTION_WINDOW: 2.5, // Nearby clicks in this window are one interaction
+  AUTO_ZOOM_SPATIAL_THRESHOLD: 420, // Pixels; prevents unrelated controls from merging
+  AUTO_ZOOM_MIN_GAP: 1.25, // Keep generated camera moments from crowding together
+  AUTO_ZOOM_MAX_REGIONS: 4, // A restrained default that remains easy to edit
   PAN_EASING: 'Balanced', // Easing function for pan transitions
 }
 
